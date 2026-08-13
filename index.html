@@ -7,17 +7,17 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Destinations" />
-  <title>Mes destinations · V5</title>
+  <title>Mes destinations · V6</title>
   <style>
     :root {
       color-scheme: dark;
       --bg: #07080c;
-      --panel: rgba(25, 27, 34, 0.94);
-      --panel2: rgba(36, 39, 48, 0.92);
-      --text: #f7f7fb;
-      --muted: #a4a9b5;
-      --line: rgba(255,255,255,.09);
-      --accent: #5b8cff;
+      --panel: rgba(24, 25, 30, 0.94);
+      --panel2: rgba(43, 44, 51, 0.90);
+      --text: #f7f7fa;
+      --muted: #9da2ad;
+      --line: rgba(255,255,255,.075);
+      --accent: #4f8cff;
       --danger: #ff626a;
     }
 
@@ -57,7 +57,7 @@
         calc(env(safe-area-inset-bottom) + 10px);
       display: flex;
       flex-direction: column;
-      gap: 9px;
+      gap: 7px;
       overflow: hidden;
     }
 
@@ -81,9 +81,10 @@
 
     h1 {
       margin: 0;
-      font-size: clamp(25px, 6.6vw, 31px);
+      font-size: clamp(24px, 6vw, 29px);
       line-height: 1;
-      letter-spacing: -.035em;
+      letter-spacing: -.04em;
+      font-weight: 780;
     }
 
     h2 {
@@ -92,13 +93,13 @@
     }
 
     .icon-btn {
-      width: 44px;
-      height: 44px;
-      flex: 0 0 44px;
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
       border: 0;
-      border-radius: 15px;
+      border-radius: 13px;
       background: var(--panel2);
-      font-size: 27px;
+      font-size: 24px;
       display: grid;
       place-items: center;
       box-shadow: inset 0 0 0 1px var(--line);
@@ -113,8 +114,8 @@
 
     .provider-card {
       min-width: 0;
-      padding: 7px 8px;
-      border-radius: 16px;
+      padding: 6px 7px;
+      border-radius: 14px;
       background: var(--panel);
       box-shadow: inset 0 0 0 1px var(--line);
       display: flex;
@@ -157,35 +158,41 @@
 
     .quick-open {
       display: flex;
-      gap: 6px;
+      gap: 5px;
     }
 
     .quick-map {
-      width: 43px;
-      min-width: 43px;
+      min-width: 42px;
+      height: 40px;
       border: 0;
-      border-radius: 14px;
+      border-radius: 12px;
       background: var(--panel);
       box-shadow: inset 0 0 0 1px var(--line);
-      display: grid;
-      place-items: center;
-      padding: 0;
-      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 0 9px;
+      font-size: 18px;
     }
 
     .quick-map small {
       display: none;
     }
 
+    .quick-map:active {
+      background: var(--panel2);
+    }
+
     .searchbox {
-      height: 44px;
-      flex: 0 0 44px;
-      padding: 0 13px;
+      height: 40px;
+      flex: 0 0 40px;
+      padding: 0 12px;
       display: flex;
       align-items: center;
       gap: 8px;
       background: var(--panel);
-      border-radius: 15px;
+      border-radius: 13px;
       box-shadow: inset 0 0 0 1px var(--line);
     }
 
@@ -200,7 +207,7 @@
       outline: 0;
       background: transparent;
       color: white;
-      font-size: 15px;
+      font-size: 14.5px;
       min-width: 0;
     }
 
@@ -215,7 +222,7 @@
 
     .section-head {
       flex: 0 0 auto;
-      margin: 1px 1px 7px;
+      margin: 0 1px 5px;
     }
 
     #countLabel {
@@ -237,15 +244,26 @@
 
     .grid::-webkit-scrollbar { display: none; }
 
+    .grid::after {
+      content: "";
+      flex: 0 0 1px;
+    }
+
     .card {
-      flex: 0 0 62px;
-      min-height: 62px;
+      flex: 0 0 54px;
+      min-height: 54px;
       position: relative;
       display: block;
       background: var(--panel);
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
       box-shadow: inset 0 0 0 1px var(--line);
+      transition: transform .12s ease, background .12s ease;
+    }
+
+    .card:active {
+      transform: scale(.992);
+      background: rgba(34, 35, 41, .98);
     }
 
     .open-destination {
@@ -256,24 +274,24 @@
       background: transparent;
       text-align: left;
       display: grid;
-      grid-template-columns: 38px 1fr 18px;
+      grid-template-columns: 34px 1fr 14px;
       grid-template-rows: auto auto;
       align-content: center;
       align-items: center;
-      column-gap: 10px;
-      row-gap: 2px;
-      padding: 8px 42px 8px 10px;
+      column-gap: 9px;
+      row-gap: 1px;
+      padding: 6px 39px 6px 9px;
     }
 
     .destination-icon {
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       grid-row: 1 / 3;
-      border-radius: 11px;
+      border-radius: 10px;
       background: var(--panel2);
       display: grid;
       place-items: center;
-      font-size: 21px;
+      font-size: 19px;
     }
 
     .destination-copy {
@@ -292,40 +310,42 @@
 
     .destination-copy strong {
       align-self: end;
-      font-size: 16px;
-      line-height: 1.12;
-      font-weight: 760;
+      font-size: 15px;
+      line-height: 1.08;
+      font-weight: 720;
+      letter-spacing: -.01em;
     }
 
     .destination-copy small {
       align-self: start;
       color: var(--muted);
-      font-size: 11.5px;
-      line-height: 1.2;
+      font-size: 10.5px;
+      line-height: 1.15;
     }
 
     .arrow {
       display: block;
       grid-column: 3;
       grid-row: 1 / 3;
-      color: var(--muted);
-      font-size: 18px;
+      color: #767b86;
+      font-size: 15px;
+      font-weight: 800;
       justify-self: end;
     }
 
     .edit-btn {
       position: absolute;
       top: 50%;
-      right: 6px;
+      right: 5px;
       transform: translateY(-50%);
-      width: 30px;
-      height: 30px;
+      width: 28px;
+      height: 28px;
       border: 0;
       border-radius: 9px;
-      background: rgba(255,255,255,.055);
-      font-size: 13px;
+      background: rgba(255,255,255,.04);
+      font-size: 12px;
       line-height: 1;
-      color: var(--muted);
+      color: #8f949e;
     }
 
     .empty {
@@ -525,8 +545,8 @@
       }
 
       .card {
-        flex-basis: 56px;
-        min-height: 56px;
+        flex-basis: 50px;
+        min-height: 50px;
       }
 
       .destination-icon {
@@ -542,7 +562,7 @@
       }
 
       .destination-copy strong {
-        font-size: 15px;
+        font-size: 14.5px;
       }
 
       .destination-copy small {
@@ -555,7 +575,7 @@
   <main class="app">
     <header class="topbar">
       <div>
-        <p class="eyebrow">NAVIGATION · V5</p>
+        <p class="eyebrow">NAVIGATION · V6</p>
         <h1>Mes destinations</h1>
       </div>
       <button id="addBtn" class="icon-btn" type="button" aria-label="Ajouter une destination">＋</button>
@@ -563,7 +583,7 @@
 
     <section class="gps-panel" aria-label="Application GPS">
       <div class="provider-card">
-        <span>Pour les favoris</span>
+        <span>Favoris avec</span>
         <div class="segmented">
           <button class="provider" type="button" data-provider="google">Google</button>
           <button class="provider" type="button" data-provider="waze">Waze</button>
