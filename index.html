@@ -7,23 +7,34 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Destinations" />
-  <title>Mes destinations</title>
+  <title>Mes destinations · V4</title>
   <style>
     :root {
       color-scheme: dark;
       --bg: #07080c;
       --panel: rgba(25, 27, 34, 0.94);
-      --panel2: rgba(36, 39, 48, 0.9);
+      --panel2: rgba(36, 39, 48, 0.92);
       --text: #f7f7fb;
       --muted: #a4a9b5;
       --line: rgba(255,255,255,.09);
       --accent: #5b8cff;
       --danger: #ff626a;
     }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { min-height: 100%; }
-    body {
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
       margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
       background:
         radial-gradient(circle at 90% -10%, rgba(85,112,255,.25), transparent 38%),
@@ -31,94 +42,495 @@
         var(--bg);
       color: var(--text);
     }
-    button, input, select { font: inherit; }
+
+    button, input { font: inherit; }
     button { color: inherit; cursor: pointer; }
+
     .app {
-      width: min(760px, 100%);
+      width: min(100%, 520px);
+      height: 100dvh;
+      min-height: 100dvh;
       margin: 0 auto;
-      padding: calc(env(safe-area-inset-top) + 22px) 16px calc(env(safe-area-inset-bottom) + 32px);
+      padding:
+        calc(env(safe-area-inset-top) + 10px)
+        12px
+        calc(env(safe-area-inset-bottom) + 10px);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      overflow: hidden;
     }
-    .topbar, .section-head, .modal-head, .actions {
+
+    .topbar,
+    .section-head,
+    .modal-head,
+    .actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
     }
-    .eyebrow { margin: 0 0 3px; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .14em; }
-    h1 { margin: 0; font-size: 31px; letter-spacing: -.03em; }
-    h2 { margin: 0; font-size: 20px; }
+
+    .eyebrow {
+      margin: 0 0 2px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: .13em;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(25px, 6.6vw, 31px);
+      line-height: 1;
+      letter-spacing: -.035em;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
     .icon-btn {
-      width: 48px; height: 48px; border: 0; border-radius: 16px;
-      background: var(--panel2); font-size: 28px; display: grid; place-items: center;
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      border: 0;
+      border-radius: 15px;
+      background: var(--panel2);
+      font-size: 27px;
+      display: grid;
+      place-items: center;
       box-shadow: inset 0 0 0 1px var(--line);
     }
+
+    .gps-panel {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: stretch;
+    }
+
     .provider-card {
-      margin-top: 22px; padding: 15px; border-radius: 20px; background: var(--panel);
+      min-width: 0;
+      padding: 7px 8px;
+      border-radius: 16px;
+      background: var(--panel);
       box-shadow: inset 0 0 0 1px var(--line);
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 7px;
     }
-    .provider-card > span { color: var(--muted); font-weight: 700; }
-    .segmented { display: flex; gap: 6px; background: #111319; padding: 4px; border-radius: 13px; }
-    .provider { border: 0; border-radius: 10px; padding: 9px 11px; background: transparent; font-weight: 800; color: var(--muted); }
-    .provider.active { background: var(--panel2); color: white; }
+
+    .provider-card > span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .segmented {
+      display: flex;
+      gap: 3px;
+      min-width: 0;
+      background: #111319;
+      padding: 3px;
+      border-radius: 11px;
+    }
+
+    .provider {
+      border: 0;
+      border-radius: 8px;
+      padding: 7px 8px;
+      background: transparent;
+      font-size: 11px;
+      font-weight: 850;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .provider.active {
+      background: var(--panel2);
+      color: white;
+    }
+
+    .quick-open {
+      display: flex;
+      gap: 6px;
+    }
+
+    .quick-map {
+      width: 43px;
+      min-width: 43px;
+      border: 0;
+      border-radius: 14px;
+      background: var(--panel);
+      box-shadow: inset 0 0 0 1px var(--line);
+      display: grid;
+      place-items: center;
+      padding: 0;
+      font-size: 20px;
+    }
+
+    .quick-map small {
+      display: none;
+    }
+
     .searchbox {
-      margin: 14px 0 24px; padding: 0 15px; height: 54px; display: flex; align-items: center; gap: 10px;
-      background: var(--panel); border-radius: 18px; box-shadow: inset 0 0 0 1px var(--line);
-    }
-    .searchbox span { font-size: 23px; color: var(--muted); }
-    .searchbox input { flex: 1; border: 0; outline: 0; background: transparent; color: white; font-size: 16px; min-width: 0; }
-    .searchbox input::placeholder { color: #7f8592; }
-    .section-head { margin-bottom: 11px; }
-    #countLabel { color: var(--muted); font-size: 14px; }
-    .grid { display: grid; gap: 11px; }
-    .card {
-      display: grid; grid-template-columns: 1fr auto; align-items: stretch;
-      background: var(--panel); border-radius: 20px; overflow: hidden;
+      height: 44px;
+      flex: 0 0 44px;
+      padding: 0 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--panel);
+      border-radius: 15px;
       box-shadow: inset 0 0 0 1px var(--line);
     }
-    .open-destination {
-      border: 0; background: transparent; text-align: left; display: grid;
-      grid-template-columns: 48px 1fr auto; align-items: center; gap: 12px; padding: 15px;
+
+    .searchbox span {
+      font-size: 20px;
+      color: var(--muted);
     }
-    .destination-icon { width: 48px; height: 48px; border-radius: 15px; background: var(--panel2); display: grid; place-items: center; font-size: 25px; }
-    .destination-copy { min-width: 0; display: block; }
-    .destination-copy strong, .destination-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .destination-copy strong { font-size: 17px; margin-bottom: 4px; }
-    .destination-copy small { color: var(--muted); font-size: 13px; }
-    .arrow { color: var(--muted); font-size: 29px; }
-    .edit-btn { width: 52px; border: 0; border-left: 1px solid var(--line); background: transparent; font-size: 20px; color: var(--muted); }
-    .empty { padding: 34px 12px; text-align: center; color: var(--muted); }
-    .hint { margin: 10px 2px 0; color: #767d8b; font-size: 12px; }
+
+    .searchbox input {
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: white;
+      font-size: 15px;
+      min-width: 0;
+    }
+
+    .searchbox input::placeholder { color: #7f8592; }
+
+    .favorites-section {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .section-head {
+      flex: 0 0 auto;
+      margin: 1px 1px 7px;
+    }
+
+    #countLabel {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .grid {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: minmax(0, 1fr);
+      gap: 8px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: none;
+      padding-bottom: 1px;
+    }
+
+    .grid::-webkit-scrollbar { display: none; }
+
+    .card {
+      min-height: 0;
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: stretch;
+      background: var(--panel);
+      border-radius: 17px;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    .open-destination {
+      min-width: 0;
+      min-height: 0;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      grid-template-rows: auto auto;
+      align-content: center;
+      align-items: center;
+      column-gap: 9px;
+      row-gap: 1px;
+      padding: 10px 30px 10px 10px;
+    }
+
+    .destination-icon {
+      width: 42px;
+      height: 42px;
+      grid-row: 1 / 3;
+      border-radius: 13px;
+      background: var(--panel2);
+      display: grid;
+      place-items: center;
+      font-size: 23px;
+    }
+
+    .destination-copy {
+      min-width: 0;
+      display: contents;
+    }
+
+    .destination-copy strong,
+    .destination-copy small {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-width: 0;
+    }
+
+    .destination-copy strong {
+      align-self: end;
+      font-size: clamp(13px, 3.5vw, 16px);
+      line-height: 1.1;
+    }
+
+    .destination-copy small {
+      align-self: start;
+      color: var(--muted);
+      font-size: clamp(9px, 2.5vw, 11px);
+      line-height: 1.2;
+    }
+
+    .arrow { display: none; }
+
+    .edit-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 29px;
+      height: 29px;
+      border: 0;
+      border-radius: 10px;
+      background: rgba(255,255,255,.055);
+      font-size: 13px;
+      line-height: 1;
+      color: var(--muted);
+    }
+
+    .empty {
+      padding: 28px 12px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .hint {
+      display: none;
+    }
 
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0,0,0,.62); backdrop-filter: blur(8px);
-      display: none; align-items: flex-end; justify-content: center; z-index: 1000;
-      padding: 12px;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 10px;
+      background: rgba(0,0,0,.64);
+      backdrop-filter: blur(8px);
     }
+
     .modal-backdrop.open { display: flex; }
+
     .modal {
-      width: min(620px, 100%); background: #15171e; border-radius: 26px;
-      padding: 18px; box-shadow: 0 22px 80px rgba(0,0,0,.55), inset 0 0 0 1px var(--line);
+      width: min(620px, 100%);
+      max-height: calc(100dvh - env(safe-area-inset-top) - 14px);
+      overflow-y: auto;
       margin-bottom: env(safe-area-inset-bottom);
+      padding: 16px;
+      background: #15171e;
+      border-radius: 24px;
+      box-shadow: 0 22px 80px rgba(0,0,0,.55), inset 0 0 0 1px var(--line);
     }
-    .close-btn { width: 40px; height: 40px; border: 0; border-radius: 13px; background: var(--panel2); font-size: 23px; }
-    .form-label { display: block; margin-top: 16px; color: var(--muted); font-weight: 700; font-size: 13px; }
-    .form-label input, .form-label select {
-      display: block; width: 100%; margin-top: 7px; border: 1px solid var(--line); outline: none;
-      background: #0d0f14; color: white; border-radius: 14px; padding: 14px; font-size: 16px;
+
+    .close-btn {
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--panel2);
+      font-size: 22px;
     }
-    .form-label input:focus, .form-label select:focus { border-color: rgba(91,140,255,.75); }
-    .actions { margin-top: 21px; }
+
+    .form-label {
+      display: block;
+      margin-top: 13px;
+      color: var(--muted);
+      font-weight: 750;
+      font-size: 12px;
+    }
+
+    .form-label input {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      border: 1px solid var(--line);
+      outline: none;
+      background: #0d0f14;
+      color: white;
+      border-radius: 13px;
+      padding: 12px 13px;
+      font-size: 16px;
+    }
+
+    .form-label input:focus {
+      border-color: rgba(91,140,255,.75);
+    }
+
+    .emoji-row {
+      margin-top: 7px;
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .emoji-input {
+      margin: 0 !important;
+      padding: 8px !important;
+      text-align: center;
+      font-size: 26px !important;
+    }
+
+    .emoji-keyboard-btn {
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #0d0f14;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .emoji-help {
+      margin: 6px 0 0;
+      color: #7f8592;
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .emoji-palette {
+      margin-top: 9px;
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 5px;
+    }
+
+    .emoji-choice {
+      aspect-ratio: 1;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #0d0f14;
+      font-size: 20px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+    }
+
+    .emoji-choice.selected {
+      border-color: rgba(91,140,255,.9);
+      background: rgba(91,140,255,.18);
+    }
+
+    .actions {
+      margin-top: 18px;
+    }
+
     .primary, .danger {
-      min-height: 48px; border: 0; border-radius: 14px; padding: 0 18px; font-weight: 850;
+      min-height: 46px;
+      border: 0;
+      border-radius: 13px;
+      padding: 0 17px;
+      font-weight: 850;
     }
-    .primary { background: var(--accent); color: white; margin-left: auto; }
-    .danger { background: rgba(255,98,106,.14); color: #ff8c92; }
-    .error { min-height: 18px; margin: 10px 0 0; color: #ff9298; font-size: 13px; }
+
+    .primary {
+      margin-left: auto;
+      background: var(--accent);
+      color: white;
+    }
+
+    .danger {
+      background: rgba(255,98,106,.14);
+      color: #ff8c92;
+    }
+
+    .error {
+      min-height: 17px;
+      margin: 8px 0 0;
+      color: #ff9298;
+      font-size: 12px;
+    }
 
     @media (min-width: 600px) {
-      .grid { grid-template-columns: 1fr 1fr; }
-      .modal-backdrop { align-items: center; }
+      .app {
+        width: min(760px, 100%);
+      }
+
+      .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .modal-backdrop {
+        align-items: center;
+      }
+
+      .quick-map {
+        width: auto;
+        min-width: 110px;
+        padding: 0 12px;
+        display: flex;
+        gap: 7px;
+      }
+
+      .quick-map small {
+        display: inline;
+        font-size: 11px;
+        font-weight: 800;
+      }
+    }
+
+    @media (max-height: 760px) {
+      .app {
+        gap: 6px;
+        padding-top: calc(env(safe-area-inset-top) + 6px);
+        padding-bottom: calc(env(safe-area-inset-bottom) + 6px);
+      }
+
+      .searchbox {
+        height: 40px;
+        flex-basis: 40px;
+      }
+
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+      }
+
+      .destination-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+      }
+
+      .open-destination {
+        grid-template-columns: 36px 1fr;
+        padding-top: 7px;
+        padding-bottom: 7px;
+      }
     }
   </style>
 </head>
@@ -126,17 +538,28 @@
   <main class="app">
     <header class="topbar">
       <div>
-        <p class="eyebrow">NAVIGATION · V3</p>
+        <p class="eyebrow">NAVIGATION · V4</p>
         <h1>Mes destinations</h1>
       </div>
       <button id="addBtn" class="icon-btn" type="button" aria-label="Ajouter une destination">＋</button>
     </header>
 
-    <section class="provider-card" aria-label="Application GPS">
-      <span>Ouvrir avec</span>
-      <div class="segmented">
-        <button class="provider" type="button" data-provider="google">Google Maps</button>
-        <button class="provider" type="button" data-provider="waze">Waze</button>
+    <section class="gps-panel" aria-label="Application GPS">
+      <div class="provider-card">
+        <span>Pour les favoris</span>
+        <div class="segmented">
+          <button class="provider" type="button" data-provider="google">Google</button>
+          <button class="provider" type="button" data-provider="waze">Waze</button>
+        </div>
+      </div>
+
+      <div class="quick-open" aria-label="Ouvrir une application GPS sans destination">
+        <button id="openGoogleBtn" class="quick-map" type="button" aria-label="Ouvrir Google Maps sans destination">
+          🗺️<small>Google Maps</small>
+        </button>
+        <button id="openWazeBtn" class="quick-map" type="button" aria-label="Ouvrir Waze sans destination">
+          🚙<small>Waze</small>
+        </button>
       </div>
     </section>
 
@@ -145,14 +568,13 @@
       <input id="searchInput" type="search" placeholder="Rechercher dans mes destinations" autocomplete="off" />
     </label>
 
-    <section>
+    <section class="favorites-section">
       <div class="section-head">
         <h2>Favoris</h2>
         <span id="countLabel"></span>
       </div>
       <div id="destinationsGrid" class="grid"></div>
       <div id="emptyState" class="empty" hidden>Aucune destination trouvée.</div>
-      <p class="hint">La recherche filtre uniquement les destinations que tu as enregistrées.</p>
     </section>
   </main>
 
@@ -174,11 +596,53 @@
           <input id="addressInput" maxlength="180" placeholder="Ex. 10 avenue des Champs-Élysées, Paris" autocomplete="street-address" />
         </label>
         <label class="form-label">Icône
-          <select id="iconInput">
-            <option>🏠</option><option>💼</option><option>⚽</option><option>🛒</option>
-            <option>🏋️</option><option>👨‍👩‍👦</option><option>⭐</option><option>📍</option>
-            <option>🍽️</option><option>🏥</option><option>✈️</option><option>🏨</option>
-          </select>
+          <div class="emoji-row">
+            <input id="iconInput" class="emoji-input" maxlength="8" value="📍" aria-label="Emoji de la destination" autocomplete="off" />
+            <button id="emojiKeyboardBtn" class="emoji-keyboard-btn" type="button">⌨️ Clavier / emoji iOS</button>
+          </div>
+          <p class="emoji-help">Tu peux choisir ci-dessous ou toucher le champ puis utiliser le clavier emoji de l’iPhone.</p>
+          <div id="emojiPalette" class="emoji-palette" aria-label="Palette d’icônes">
+            <button class="emoji-choice" type="button">🏠</button>
+            <button class="emoji-choice" type="button">🏡</button>
+            <button class="emoji-choice" type="button">🏢</button>
+            <button class="emoji-choice" type="button">💼</button>
+            <button class="emoji-choice" type="button">🏫</button>
+            <button class="emoji-choice" type="button">🏥</button>
+            <button class="emoji-choice" type="button">🏨</button>
+            <button class="emoji-choice" type="button">🏦</button>
+            <button class="emoji-choice" type="button">🛒</button>
+            <button class="emoji-choice" type="button">🛍️</button>
+            <button class="emoji-choice" type="button">⛽️</button>
+            <button class="emoji-choice" type="button">🔧</button>
+            <button class="emoji-choice" type="button">🚗</button>
+            <button class="emoji-choice" type="button">🚙</button>
+            <button class="emoji-choice" type="button">🅿️</button>
+            <button class="emoji-choice" type="button">🚉</button>
+            <button class="emoji-choice" type="button">✈️</button>
+            <button class="emoji-choice" type="button">⚓️</button>
+            <button class="emoji-choice" type="button">⚽️</button>
+            <button class="emoji-choice" type="button">🏋️</button>
+            <button class="emoji-choice" type="button">🎾</button>
+            <button class="emoji-choice" type="button">🏊</button>
+            <button class="emoji-choice" type="button">🍽️</button>
+            <button class="emoji-choice" type="button">☕️</button>
+            <button class="emoji-choice" type="button">🍔</button>
+            <button class="emoji-choice" type="button">🎬</button>
+            <button class="emoji-choice" type="button">🎵</button>
+            <button class="emoji-choice" type="button">🌳</button>
+            <button class="emoji-choice" type="button">🏖️</button>
+            <button class="emoji-choice" type="button">👨‍👩‍👦</button>
+            <button class="emoji-choice" type="button">❤️</button>
+            <button class="emoji-choice" type="button">⭐️</button>
+            <button class="emoji-choice" type="button">📍</button>
+            <button class="emoji-choice" type="button">📌</button>
+            <button class="emoji-choice" type="button">🎯</button>
+            <button class="emoji-choice" type="button">🧭</button>
+            <button class="emoji-choice" type="button">🏰</button>
+            <button class="emoji-choice" type="button">🏛️</button>
+            <button class="emoji-choice" type="button">⛪️</button>
+            <button class="emoji-choice" type="button">🕌</button>
+          </div>
         </label>
         <p id="formError" class="error"></p>
         <div class="actions">
@@ -227,6 +691,10 @@
       const iconInput = $('iconInput');
       const deleteBtn = $('deleteBtn');
       const formError = $('formError');
+      const emojiKeyboardBtn = $('emojiKeyboardBtn');
+      const emojiPalette = $('emojiPalette');
+      const openGoogleBtn = $('openGoogleBtn');
+      const openWazeBtn = $('openWazeBtn');
 
       let editingId = null;
       let provider = loadProvider();
@@ -296,6 +764,40 @@
           : `https://www.google.com/maps/dir/?api=1&destination=${q}&travelmode=driving`;
       }
 
+      function openGpsApp(app) {
+        const scheme = app === 'waze' ? 'waze://' : 'comgooglemaps://';
+        const fallback = app === 'waze'
+          ? 'https://www.waze.com/ul'
+          : 'https://www.google.com/maps';
+
+        let fallbackTimer = null;
+
+        const cleanup = () => {
+          if (fallbackTimer) clearTimeout(fallbackTimer);
+          document.removeEventListener('visibilitychange', onVisibilityChange);
+        };
+
+        const onVisibilityChange = () => {
+          if (document.hidden) cleanup();
+        };
+
+        document.addEventListener('visibilitychange', onVisibilityChange);
+
+        fallbackTimer = setTimeout(() => {
+          cleanup();
+          window.location.href = fallback;
+        }, 900);
+
+        window.location.href = scheme;
+      }
+
+      function updateEmojiSelection() {
+        const current = iconInput.value.trim();
+        emojiPalette.querySelectorAll('.emoji-choice').forEach(button => {
+          button.classList.toggle('selected', button.textContent.trim() === current);
+        });
+      }
+
       function openNavigation(item) {
         if (!item.address || /^votre /i.test(item.address)) {
           openEdit(item.id);
@@ -361,6 +863,7 @@
         nameInput.value = '';
         addressInput.value = '';
         iconInput.value = '📍';
+        updateEmojiSelection();
         deleteBtn.hidden = true;
         formError.textContent = '';
         openModal();
@@ -374,6 +877,7 @@
         nameInput.value = item.name;
         addressInput.value = /^votre /i.test(item.address) ? '' : item.address;
         iconInput.value = item.icon || '📍';
+        updateEmojiSelection();
         deleteBtn.hidden = false;
         formError.textContent = '';
         openModal();
@@ -415,6 +919,23 @@
       modalBackdrop.addEventListener('click', (event) => {
         if (event.target === modalBackdrop) closeModal();
       });
+
+      emojiKeyboardBtn.addEventListener('click', () => {
+        iconInput.focus();
+        iconInput.setSelectionRange(iconInput.value.length, iconInput.value.length);
+      });
+
+      iconInput.addEventListener('input', updateEmojiSelection);
+
+      emojiPalette.addEventListener('click', (event) => {
+        const button = event.target.closest('.emoji-choice');
+        if (!button) return;
+        iconInput.value = button.textContent.trim();
+        updateEmojiSelection();
+      });
+
+      openGoogleBtn.addEventListener('click', () => openGpsApp('google'));
+      openWazeBtn.addEventListener('click', () => openGpsApp('waze'));
 
       document.querySelectorAll('.provider').forEach(button => {
         button.classList.toggle('active', button.dataset.provider === provider);
