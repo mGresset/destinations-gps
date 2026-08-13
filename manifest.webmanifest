@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b0f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Destinations" />
+  <title>Mes destinations</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">NAVIGATION</p>
+        <h1>Mes destinations</h1>
+      </div>
+      <button id="addBtn" class="icon-btn" aria-label="Ajouter une destination">＋</button>
+    </header>
+
+    <section class="provider-card" aria-label="Application de navigation">
+      <span>Ouvrir avec</span>
+      <div class="segmented" role="group" aria-label="Choisir l'application GPS">
+        <button class="provider active" data-provider="google">Google Maps</button>
+        <button class="provider" data-provider="waze">Waze</button>
+      </div>
+    </section>
+
+    <label class="searchbox">
+      <span>⌕</span>
+      <input id="searchInput" type="search" placeholder="Rechercher une destination" autocomplete="off" />
+    </label>
+
+    <section>
+      <div class="section-heading">
+        <h2>Favoris</h2>
+        <span id="countLabel"></span>
+      </div>
+      <div id="destinationsGrid" class="destinations-grid"></div>
+      <p id="emptyState" class="empty-state" hidden>Aucune destination trouvée.</p>
+    </section>
+  </main>
+
+  <dialog id="destinationDialog">
+    <form id="destinationForm" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">DESTINATION</p>
+          <h2 id="dialogTitle">Ajouter</h2>
+        </div>
+        <button type="button" id="closeDialogBtn" class="icon-btn small" aria-label="Fermer">×</button>
+      </div>
+
+      <input type="hidden" id="destinationId" />
+
+      <label>
+        Nom
+        <input id="nameInput" required maxlength="40" placeholder="Ex. Maison" />
+      </label>
+
+      <label>
+        Adresse ou lieu
+        <input id="addressInput" required maxlength="180" placeholder="Ex. 10 avenue des Champs-Élysées, Paris" />
+      </label>
+
+      <label>
+        Icône
+        <select id="iconInput">
+          <option>🏠</option>
+          <option>💼</option>
+          <option>⚽</option>
+          <option>🛒</option>
+          <option>🏋️</option>
+          <option>👨‍👩‍👦</option>
+          <option>⭐</option>
+          <option>📍</option>
+          <option>🍽️</option>
+          <option>🏥</option>
+          <option>✈️</option>
+          <option>🏨</option>
+        </select>
+      </label>
+
+      <div class="dialog-actions">
+        <button type="button" id="deleteBtn" class="danger" hidden>Supprimer</button>
+        <button type="submit" class="primary">Enregistrer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="destinationTemplate">
+    <article class="destination-card">
+      <button class="destination-open">
+        <span class="destination-icon"></span>
+        <span class="destination-copy">
+          <strong class="destination-name"></strong>
+          <small class="destination-address"></small>
+        </span>
+        <span class="arrow">›</span>
+      </button>
+      <button class="edit-btn" aria-label="Modifier la destination">•••</button>
+    </article>
+  </template>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
