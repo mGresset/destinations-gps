@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Destinations" />
-  <title>Mes destinations · V6</title>
+  <title>Mes destinations · V7</title>
   <style>
     :root {
       color-scheme: dark;
@@ -569,16 +569,271 @@
         font-size: 10.5px;
       }
     }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tool-btn {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      border: 0;
+      border-radius: 13px;
+      background: var(--panel2);
+      box-shadow: inset 0 0 0 1px var(--line);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      font-size: 19px;
+    }
+
+    .recents-section[hidden] {
+      display: none;
+    }
+
+    .recents-section {
+      flex: 0 0 auto;
+    }
+
+    .recents-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 1px 5px;
+    }
+
+    .recents-head h2 {
+      font-size: 14px;
+    }
+
+    .recents-clear {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 3px 2px;
+    }
+
+    .recent-list {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 1px;
+    }
+
+    .recent-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .recent-chip {
+      min-width: 0;
+      max-width: 44%;
+      height: 36px;
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 12px;
+      background: var(--panel);
+      box-shadow: inset 0 0 0 1px var(--line);
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text);
+    }
+
+    .recent-chip .recent-icon {
+      flex: 0 0 auto;
+      font-size: 16px;
+    }
+
+    .recent-chip .recent-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 720;
+    }
+
+    .distance-tag {
+      color: #78d7be;
+      font-weight: 700;
+    }
+
+    .tools-grid {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .tool-row {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #0d0f14;
+      color: var(--text);
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .tool-row strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .tool-row small {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .tool-row .tool-icon {
+      font-size: 20px;
+      flex: 0 0 auto;
+    }
+
+    .status-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 13px;
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.35;
+    }
+
+    .coords-panel {
+      margin-top: 12px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.025);
+    }
+
+    .coords-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .coords-copy strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .coords-copy small {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 10.5px;
+    }
+
+    .secondary {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--panel2);
+      color: var(--text);
+      padding: 0 11px;
+      font-size: 11px;
+      font-weight: 780;
+    }
+
+    .reorder-list {
+      margin-top: 12px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .reorder-item {
+      min-height: 50px;
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 8px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #0d0f14;
+    }
+
+    .reorder-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--panel2);
+      font-size: 18px;
+    }
+
+    .reorder-name {
+      min-width: 0;
+      font-size: 13px;
+      font-weight: 720;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .reorder-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .reorder-arrow {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--panel2);
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    .reorder-arrow:disabled {
+      opacity: .25;
+    }
+
+    .import-input {
+      display: none;
+    }
+
+    @media (max-height: 760px) {
+      .recent-chip {
+        height: 32px;
+      }
+
+      .recents-head {
+        margin-bottom: 3px;
+      }
+    }
+
   </style>
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div>
-        <p class="eyebrow">NAVIGATION · V6</p>
+        <p class="eyebrow">NAVIGATION · V7</p>
         <h1>Mes destinations</h1>
       </div>
-      <button id="addBtn" class="icon-btn" type="button" aria-label="Ajouter une destination">＋</button>
+      <div class="top-actions">
+        <button id="toolsBtn" class="tool-btn" type="button" aria-label="Outils">⚙︎</button>
+        <button id="addBtn" class="icon-btn" type="button" aria-label="Ajouter une destination">＋</button>
+      </div>
     </header>
 
     <section class="gps-panel" aria-label="Application GPS">
@@ -604,6 +859,14 @@
       <span>⌕</span>
       <input id="searchInput" type="search" placeholder="Rechercher dans mes destinations" autocomplete="off" />
     </label>
+
+    <section id="recentsSection" class="recents-section" hidden>
+      <div class="recents-head">
+        <h2>Récentes</h2>
+        <button id="clearRecentsBtn" class="recents-clear" type="button">Effacer</button>
+      </div>
+      <div id="recentList" class="recent-list"></div>
+    </section>
 
     <section class="favorites-section">
       <div class="section-head">
@@ -681,12 +944,87 @@
             <button class="emoji-choice" type="button">🕌</button>
           </div>
         </label>
+
+        <div class="coords-panel">
+          <div class="coords-line">
+            <div class="coords-copy">
+              <strong>Coordonnées GPS</strong>
+              <small id="coordsStatus">Non enregistrées</small>
+            </div>
+            <button id="useCurrentLocationBtn" class="secondary" type="button">📍 Utiliser ma position</button>
+          </div>
+        </div>
+
         <p id="formError" class="error"></p>
         <div class="actions">
           <button id="deleteBtn" class="danger" type="button" hidden>Supprimer</button>
           <button class="primary" type="submit">Enregistrer</button>
         </div>
       </form>
+    </section>
+  </div>
+
+  <div id="toolsBackdrop" class="modal-backdrop" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="toolsTitle">
+      <div class="modal-head">
+        <div>
+          <p class="eyebrow">V7 · OUTILS</p>
+          <h2 id="toolsTitle">Réglages</h2>
+        </div>
+        <button id="closeToolsBtn" class="close-btn" type="button" aria-label="Fermer">×</button>
+      </div>
+
+      <div class="tools-grid">
+        <button id="locateBtn" class="tool-row" type="button">
+          <span>
+            <strong>Ma position et distances</strong>
+            <small>Affiche la distance à vol d’oiseau pour les favoris ayant des coordonnées GPS.</small>
+          </span>
+          <span class="tool-icon">📍</span>
+        </button>
+
+        <button id="reorderBtn" class="tool-row" type="button">
+          <span>
+            <strong>Réorganiser les favoris</strong>
+            <small>Choisis précisément l’ordre des destinations.</small>
+          </span>
+          <span class="tool-icon">↕️</span>
+        </button>
+
+        <button id="exportBtn" class="tool-row" type="button">
+          <span>
+            <strong>Exporter une sauvegarde</strong>
+            <small>Enregistre tes favoris et réglages dans un fichier JSON.</small>
+          </span>
+          <span class="tool-icon">⬆️</span>
+        </button>
+
+        <button id="importBtn" class="tool-row" type="button">
+          <span>
+            <strong>Importer une sauvegarde</strong>
+            <small>Restaure un fichier exporté par cette application.</small>
+          </span>
+          <span class="tool-icon">⬇️</span>
+        </button>
+        <input id="importInput" class="import-input" type="file" accept="application/json,.json" />
+      </div>
+
+      <div id="toolsStatus" class="status-box">
+        Les coordonnées de ta position ne sont jamais sauvegardées par l’application.
+      </div>
+    </section>
+  </div>
+
+  <div id="reorderBackdrop" class="modal-backdrop" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="reorderTitle">
+      <div class="modal-head">
+        <div>
+          <p class="eyebrow">FAVORIS</p>
+          <h2 id="reorderTitle">Réorganiser</h2>
+        </div>
+        <button id="closeReorderBtn" class="close-btn" type="button" aria-label="Fermer">×</button>
+      </div>
+      <div id="reorderList" class="reorder-list"></div>
     </section>
   </div>
 
@@ -698,6 +1036,8 @@
       const PROVIDER_KEY = 'gps-provider-v3';
       const LEGACY_STORAGE_KEYS = ['gps-destinations-v2', 'gps-destinations-v1'];
       const LEGACY_PROVIDER_KEYS = ['gps-provider-v2', 'gps-provider-v1'];
+      const RECENTS_KEY = 'gps-recents-v7';
+      const MAX_RECENTS = 3;
 
       const makeId = () => {
         if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
@@ -732,10 +1072,30 @@
       const emojiPalette = $('emojiPalette');
       const openGoogleBtn = $('openGoogleBtn');
       const openWazeBtn = $('openWazeBtn');
+      const toolsBtn = $('toolsBtn');
+      const toolsBackdrop = $('toolsBackdrop');
+      const closeToolsBtn = $('closeToolsBtn');
+      const locateBtn = $('locateBtn');
+      const reorderBtn = $('reorderBtn');
+      const exportBtn = $('exportBtn');
+      const importBtn = $('importBtn');
+      const importInput = $('importInput');
+      const toolsStatus = $('toolsStatus');
+      const reorderBackdrop = $('reorderBackdrop');
+      const closeReorderBtn = $('closeReorderBtn');
+      const reorderList = $('reorderList');
+      const recentsSection = $('recentsSection');
+      const recentList = $('recentList');
+      const clearRecentsBtn = $('clearRecentsBtn');
+      const useCurrentLocationBtn = $('useCurrentLocationBtn');
+      const coordsStatus = $('coordsStatus');
 
       let editingId = null;
       let provider = loadProvider();
       let destinations = load();
+      let recents = loadRecents();
+      let currentPosition = null;
+      let pendingCoords = null;
 
       function loadProvider() {
         const current = localStorage.getItem(PROVIDER_KEY);
@@ -790,6 +1150,225 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(destinations));
       }
 
+      function loadRecents() {
+        try {
+          const data = JSON.parse(localStorage.getItem(RECENTS_KEY));
+          return Array.isArray(data) ? data.slice(0, MAX_RECENTS) : [];
+        } catch (_) {
+          return [];
+        }
+      }
+
+      function saveRecents() {
+        localStorage.setItem(RECENTS_KEY, JSON.stringify(recents));
+      }
+
+      function rememberRecent(id) {
+        recents = [id, ...recents.filter(itemId => itemId !== id)].slice(0, MAX_RECENTS);
+        saveRecents();
+      }
+
+      function haversineKm(lat1, lon1, lat2, lon2) {
+        const toRad = value => value * Math.PI / 180;
+        const R = 6371;
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lon2 - lon1);
+        const a =
+          Math.sin(dLat / 2) ** 2 +
+          Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+          Math.sin(dLon / 2) ** 2;
+        return 2 * R * Math.asin(Math.sqrt(a));
+      }
+
+      function formatDistance(km) {
+        if (!Number.isFinite(km)) return '';
+        if (km < 1) return `${Math.max(10, Math.round(km * 1000 / 10) * 10)} m`;
+        if (km < 10) return `${km.toFixed(1).replace('.', ',')} km`;
+        return `${Math.round(km)} km`;
+      }
+
+      function itemDistance(item) {
+        if (!currentPosition || !Number.isFinite(item.lat) || !Number.isFinite(item.lon)) return '';
+        return formatDistance(
+          haversineKm(
+            currentPosition.lat,
+            currentPosition.lon,
+            Number(item.lat),
+            Number(item.lon)
+          )
+        );
+      }
+
+      function getCurrentPosition(options = {}) {
+        return new Promise((resolve, reject) => {
+          if (!navigator.geolocation) {
+            reject(new Error('La géolocalisation n’est pas disponible sur cet appareil.'));
+            return;
+          }
+          navigator.geolocation.getCurrentPosition(
+            position => resolve({
+              lat: position.coords.latitude,
+              lon: position.coords.longitude,
+              accuracy: position.coords.accuracy
+            }),
+            error => {
+              const messages = {
+                1: 'Autorisation de localisation refusée.',
+                2: 'Position actuellement indisponible.',
+                3: 'La localisation a pris trop de temps.'
+              };
+              reject(new Error(messages[error.code] || 'Impossible d’obtenir ta position.'));
+            },
+            {
+              enableHighAccuracy: true,
+              timeout: 12000,
+              maximumAge: options.maximumAge ?? 30000
+            }
+          );
+        });
+      }
+
+      function openSheet(backdrop) {
+        backdrop.classList.add('open');
+        backdrop.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeSheet(backdrop) {
+        backdrop.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+      }
+
+      function renderRecents() {
+        const items = recents
+          .map(id => destinations.find(item => item.id === id))
+          .filter(Boolean)
+          .slice(0, MAX_RECENTS);
+
+        recentList.innerHTML = '';
+        recentsSection.hidden = items.length === 0;
+
+        items.forEach(item => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'recent-chip';
+
+          const icon = document.createElement('span');
+          icon.className = 'recent-icon';
+          icon.textContent = item.icon || '📍';
+
+          const name = document.createElement('span');
+          name.className = 'recent-name';
+          name.textContent = item.name;
+
+          button.append(icon, name);
+          button.addEventListener('click', () => openNavigation(item));
+          recentList.appendChild(button);
+        });
+      }
+
+      function renderReorder() {
+        reorderList.innerHTML = '';
+
+        destinations.forEach((item, index) => {
+          const row = document.createElement('div');
+          row.className = 'reorder-item';
+
+          const icon = document.createElement('span');
+          icon.className = 'reorder-icon';
+          icon.textContent = item.icon || '📍';
+
+          const name = document.createElement('span');
+          name.className = 'reorder-name';
+          name.textContent = item.name;
+
+          const actions = document.createElement('div');
+          actions.className = 'reorder-actions';
+
+          const up = document.createElement('button');
+          up.type = 'button';
+          up.className = 'reorder-arrow';
+          up.textContent = '↑';
+          up.disabled = index === 0;
+          up.setAttribute('aria-label', `Monter ${item.name}`);
+          up.addEventListener('click', () => moveDestination(index, index - 1));
+
+          const down = document.createElement('button');
+          down.type = 'button';
+          down.className = 'reorder-arrow';
+          down.textContent = '↓';
+          down.disabled = index === destinations.length - 1;
+          down.setAttribute('aria-label', `Descendre ${item.name}`);
+          down.addEventListener('click', () => moveDestination(index, index + 1));
+
+          actions.append(up, down);
+          row.append(icon, name, actions);
+          reorderList.appendChild(row);
+        });
+      }
+
+      function moveDestination(fromIndex, toIndex) {
+        if (toIndex < 0 || toIndex >= destinations.length || fromIndex === toIndex) return;
+        const [moved] = destinations.splice(fromIndex, 1);
+        destinations.splice(toIndex, 0, moved);
+        save();
+        renderReorder();
+        render();
+      }
+
+      function updateCoordsStatus() {
+        if (pendingCoords && Number.isFinite(pendingCoords.lat) && Number.isFinite(pendingCoords.lon)) {
+          const accuracy = Number.isFinite(pendingCoords.accuracy)
+            ? ` · précision ±${Math.round(pendingCoords.accuracy)} m`
+            : '';
+          coordsStatus.textContent =
+            `${pendingCoords.lat.toFixed(5)}, ${pendingCoords.lon.toFixed(5)}${accuracy}`;
+        } else {
+          coordsStatus.textContent = 'Non enregistrées';
+        }
+      }
+
+      function exportBackup() {
+        const payload = {
+          app: 'destinations-gps',
+          version: 7,
+          exportedAt: new Date().toISOString(),
+          provider,
+          destinations,
+          recents
+        };
+
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        const date = new Date().toISOString().slice(0, 10);
+        link.href = url;
+        link.download = `destinations-gps-${date}.json`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        toolsStatus.textContent = 'Sauvegarde exportée. Garde le fichier dans Fichiers ou iCloud Drive.';
+      }
+
+      function validateImportedDestinations(value) {
+        if (!Array.isArray(value)) return null;
+
+        const cleaned = value
+          .filter(item => item && typeof item.name === 'string' && typeof item.address === 'string')
+          .map(item => ({
+            id: typeof item.id === 'string' && item.id ? item.id : makeId(),
+            name: item.name.trim().slice(0, 40),
+            address: item.address.trim().slice(0, 180),
+            icon: typeof item.icon === 'string' && item.icon ? item.icon.slice(0, 8) : '📍',
+            ...(Number.isFinite(Number(item.lat)) && Number.isFinite(Number(item.lon))
+              ? { lat: Number(item.lat), lon: Number(item.lon) }
+              : {})
+          }))
+          .filter(item => item.name && item.address);
+
+        return cleaned.length ? uniqueDestinations(cleaned) : null;
+      }
+
       function normalize(value) {
         return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
       }
@@ -840,6 +1419,8 @@
           openEdit(item.id);
           return;
         }
+        rememberRecent(item.id);
+        renderRecents();
         window.location.href = navigationUrl(item.address);
       }
 
@@ -861,7 +1442,15 @@
             <span class="arrow">›</span>`;
           openBtn.querySelector('.destination-icon').textContent = item.icon || '📍';
           openBtn.querySelector('strong').textContent = item.name;
-          openBtn.querySelector('small').textContent = item.address;
+          const distance = itemDistance(item);
+          const small = openBtn.querySelector('small');
+          small.textContent = item.address;
+          if (distance) {
+            const distanceSpan = document.createElement('span');
+            distanceSpan.className = 'distance-tag';
+            distanceSpan.textContent = ` · ${distance}`;
+            small.appendChild(distanceSpan);
+          }
           openBtn.addEventListener('click', () => openNavigation(item));
 
           const editBtn = document.createElement('button');
@@ -877,6 +1466,7 @@
 
         countLabel.textContent = `${filtered.length} destination${filtered.length > 1 ? 's' : ''}`;
         emptyState.hidden = filtered.length !== 0;
+        renderRecents();
       }
 
       function openModal() {
@@ -891,6 +1481,7 @@
         modalBackdrop.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
         editingId = null;
+        pendingCoords = null;
         formError.textContent = '';
       }
 
@@ -900,6 +1491,8 @@
         nameInput.value = '';
         addressInput.value = '';
         iconInput.value = '📍';
+        pendingCoords = null;
+        updateCoordsStatus();
         updateEmojiSelection();
         deleteBtn.hidden = true;
         formError.textContent = '';
@@ -914,6 +1507,10 @@
         nameInput.value = item.name;
         addressInput.value = /^votre /i.test(item.address) ? '' : item.address;
         iconInput.value = item.icon || '📍';
+        pendingCoords = Number.isFinite(Number(item.lat)) && Number.isFinite(Number(item.lon))
+          ? { lat: Number(item.lat), lon: Number(item.lon) }
+          : null;
+        updateCoordsStatus();
         updateEmojiSelection();
         deleteBtn.hidden = false;
         formError.textContent = '';
@@ -931,10 +1528,16 @@
           return;
         }
 
+        const coords = pendingCoords && Number.isFinite(pendingCoords.lat) && Number.isFinite(pendingCoords.lon)
+          ? { lat: pendingCoords.lat, lon: pendingCoords.lon }
+          : {};
+
         if (editingId) {
-          destinations = destinations.map(d => d.id === editingId ? { ...d, name, address, icon } : d);
+          destinations = destinations.map(d =>
+            d.id === editingId ? { ...d, name, address, icon, ...coords } : d
+          );
         } else {
-          destinations.unshift({ id: makeId(), name, address, icon });
+          destinations.unshift({ id: makeId(), name, address, icon, ...coords });
         }
 
         save();
@@ -944,8 +1547,11 @@
 
       deleteBtn.addEventListener('click', () => {
         if (!editingId) return;
-        destinations = destinations.filter(d => d.id !== editingId);
+        const deletedId = editingId;
+        destinations = destinations.filter(d => d.id !== deletedId);
+        recents = recents.filter(id => id !== deletedId);
         save();
+        saveRecents();
         closeModal();
         render();
       });
@@ -973,6 +1579,104 @@
 
       openGoogleBtn.addEventListener('click', () => openGpsApp('google'));
       openWazeBtn.addEventListener('click', () => openGpsApp('waze'));
+
+      toolsBtn.addEventListener('click', () => openSheet(toolsBackdrop));
+      closeToolsBtn.addEventListener('click', () => closeSheet(toolsBackdrop));
+      toolsBackdrop.addEventListener('click', event => {
+        if (event.target === toolsBackdrop) closeSheet(toolsBackdrop);
+      });
+
+      locateBtn.addEventListener('click', async () => {
+        toolsStatus.textContent = 'Localisation en cours…';
+        try {
+          const position = await getCurrentPosition();
+          currentPosition = position;
+          const gpsCount = destinations.filter(item =>
+            Number.isFinite(Number(item.lat)) && Number.isFinite(Number(item.lon))
+          ).length;
+          toolsStatus.textContent = gpsCount
+            ? `Position obtenue (±${Math.round(position.accuracy)} m). Les distances sont affichées pour ${gpsCount} favori${gpsCount > 1 ? 's' : ''} avec coordonnées GPS.`
+            : `Position obtenue (±${Math.round(position.accuracy)} m). Aucun favori n’a encore de coordonnées : ouvre ••• sur une destination puis « Utiliser ma position ».`;
+          render();
+        } catch (error) {
+          toolsStatus.textContent = error.message;
+        }
+      });
+
+      useCurrentLocationBtn.addEventListener('click', async () => {
+        const previous = useCurrentLocationBtn.textContent;
+        useCurrentLocationBtn.disabled = true;
+        useCurrentLocationBtn.textContent = 'Localisation…';
+        formError.textContent = '';
+        try {
+          pendingCoords = await getCurrentPosition({ maximumAge: 10000 });
+          updateCoordsStatus();
+        } catch (error) {
+          formError.textContent = error.message;
+        } finally {
+          useCurrentLocationBtn.disabled = false;
+          useCurrentLocationBtn.textContent = previous;
+        }
+      });
+
+      reorderBtn.addEventListener('click', () => {
+        renderReorder();
+        closeSheet(toolsBackdrop);
+        openSheet(reorderBackdrop);
+      });
+
+      closeReorderBtn.addEventListener('click', () => closeSheet(reorderBackdrop));
+      reorderBackdrop.addEventListener('click', event => {
+        if (event.target === reorderBackdrop) closeSheet(reorderBackdrop);
+      });
+
+      clearRecentsBtn.addEventListener('click', () => {
+        recents = [];
+        saveRecents();
+        renderRecents();
+      });
+
+      exportBtn.addEventListener('click', exportBackup);
+
+      importBtn.addEventListener('click', () => importInput.click());
+
+      importInput.addEventListener('change', async () => {
+        const file = importInput.files && importInput.files[0];
+        if (!file) return;
+
+        try {
+          const raw = await file.text();
+          const parsed = JSON.parse(raw);
+          const imported = validateImportedDestinations(parsed.destinations ?? parsed);
+
+          if (!imported) throw new Error('Le fichier ne contient pas de destinations valides.');
+
+          destinations = imported;
+          if (parsed && (parsed.provider === 'google' || parsed.provider === 'waze')) {
+            provider = parsed.provider;
+            localStorage.setItem(PROVIDER_KEY, provider);
+            document.querySelectorAll('.provider').forEach(btn =>
+              btn.classList.toggle('active', btn.dataset.provider === provider)
+            );
+          }
+
+          if (parsed && Array.isArray(parsed.recents)) {
+            const validIds = new Set(destinations.map(item => item.id));
+            recents = parsed.recents.filter(id => validIds.has(id)).slice(0, MAX_RECENTS);
+          } else {
+            recents = [];
+          }
+
+          save();
+          saveRecents();
+          render();
+          toolsStatus.textContent = `${destinations.length} destination${destinations.length > 1 ? 's' : ''} importée${destinations.length > 1 ? 's' : ''} avec succès.`;
+        } catch (error) {
+          toolsStatus.textContent = `Import impossible : ${error.message}`;
+        } finally {
+          importInput.value = '';
+        }
+      });
 
       document.querySelectorAll('.provider').forEach(button => {
         button.classList.toggle('active', button.dataset.provider === provider);
