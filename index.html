@@ -8,104 +8,381 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Destinations" />
   <title>Mes destinations</title>
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="icon-180.png" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07080c;
+      --panel: rgba(25, 27, 34, 0.94);
+      --panel2: rgba(36, 39, 48, 0.9);
+      --text: #f7f7fb;
+      --muted: #a4a9b5;
+      --line: rgba(255,255,255,.09);
+      --accent: #5b8cff;
+      --danger: #ff626a;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { min-height: 100%; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 90% -10%, rgba(85,112,255,.25), transparent 38%),
+        radial-gradient(circle at -10% 25%, rgba(58,201,182,.09), transparent 35%),
+        var(--bg);
+      color: var(--text);
+    }
+    button, input, select { font: inherit; }
+    button { color: inherit; cursor: pointer; }
+    .app {
+      width: min(760px, 100%);
+      margin: 0 auto;
+      padding: calc(env(safe-area-inset-top) + 22px) 16px calc(env(safe-area-inset-bottom) + 32px);
+    }
+    .topbar, .section-head, .modal-head, .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .eyebrow { margin: 0 0 3px; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .14em; }
+    h1 { margin: 0; font-size: 31px; letter-spacing: -.03em; }
+    h2 { margin: 0; font-size: 20px; }
+    .icon-btn {
+      width: 48px; height: 48px; border: 0; border-radius: 16px;
+      background: var(--panel2); font-size: 28px; display: grid; place-items: center;
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+    .provider-card {
+      margin-top: 22px; padding: 15px; border-radius: 20px; background: var(--panel);
+      box-shadow: inset 0 0 0 1px var(--line);
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .provider-card > span { color: var(--muted); font-weight: 700; }
+    .segmented { display: flex; gap: 6px; background: #111319; padding: 4px; border-radius: 13px; }
+    .provider { border: 0; border-radius: 10px; padding: 9px 11px; background: transparent; font-weight: 800; color: var(--muted); }
+    .provider.active { background: var(--panel2); color: white; }
+    .searchbox {
+      margin: 14px 0 24px; padding: 0 15px; height: 54px; display: flex; align-items: center; gap: 10px;
+      background: var(--panel); border-radius: 18px; box-shadow: inset 0 0 0 1px var(--line);
+    }
+    .searchbox span { font-size: 23px; color: var(--muted); }
+    .searchbox input { flex: 1; border: 0; outline: 0; background: transparent; color: white; font-size: 16px; min-width: 0; }
+    .searchbox input::placeholder { color: #7f8592; }
+    .section-head { margin-bottom: 11px; }
+    #countLabel { color: var(--muted); font-size: 14px; }
+    .grid { display: grid; gap: 11px; }
+    .card {
+      display: grid; grid-template-columns: 1fr auto; align-items: stretch;
+      background: var(--panel); border-radius: 20px; overflow: hidden;
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+    .open-destination {
+      border: 0; background: transparent; text-align: left; display: grid;
+      grid-template-columns: 48px 1fr auto; align-items: center; gap: 12px; padding: 15px;
+    }
+    .destination-icon { width: 48px; height: 48px; border-radius: 15px; background: var(--panel2); display: grid; place-items: center; font-size: 25px; }
+    .destination-copy { min-width: 0; display: block; }
+    .destination-copy strong, .destination-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .destination-copy strong { font-size: 17px; margin-bottom: 4px; }
+    .destination-copy small { color: var(--muted); font-size: 13px; }
+    .arrow { color: var(--muted); font-size: 29px; }
+    .edit-btn { width: 52px; border: 0; border-left: 1px solid var(--line); background: transparent; font-size: 20px; color: var(--muted); }
+    .empty { padding: 34px 12px; text-align: center; color: var(--muted); }
+    .hint { margin: 10px 2px 0; color: #767d8b; font-size: 12px; }
+
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.62); backdrop-filter: blur(8px);
+      display: none; align-items: flex-end; justify-content: center; z-index: 1000;
+      padding: 12px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      width: min(620px, 100%); background: #15171e; border-radius: 26px;
+      padding: 18px; box-shadow: 0 22px 80px rgba(0,0,0,.55), inset 0 0 0 1px var(--line);
+      margin-bottom: env(safe-area-inset-bottom);
+    }
+    .close-btn { width: 40px; height: 40px; border: 0; border-radius: 13px; background: var(--panel2); font-size: 23px; }
+    .form-label { display: block; margin-top: 16px; color: var(--muted); font-weight: 700; font-size: 13px; }
+    .form-label input, .form-label select {
+      display: block; width: 100%; margin-top: 7px; border: 1px solid var(--line); outline: none;
+      background: #0d0f14; color: white; border-radius: 14px; padding: 14px; font-size: 16px;
+    }
+    .form-label input:focus, .form-label select:focus { border-color: rgba(91,140,255,.75); }
+    .actions { margin-top: 21px; }
+    .primary, .danger {
+      min-height: 48px; border: 0; border-radius: 14px; padding: 0 18px; font-weight: 850;
+    }
+    .primary { background: var(--accent); color: white; margin-left: auto; }
+    .danger { background: rgba(255,98,106,.14); color: #ff8c92; }
+    .error { min-height: 18px; margin: 10px 0 0; color: #ff9298; font-size: 13px; }
+
+    @media (min-width: 600px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+      .modal-backdrop { align-items: center; }
+    }
+  </style>
 </head>
 <body>
-  <main class="app-shell">
+  <main class="app">
     <header class="topbar">
       <div>
         <p class="eyebrow">NAVIGATION</p>
         <h1>Mes destinations</h1>
       </div>
-      <button id="addBtn" class="icon-btn" aria-label="Ajouter une destination">＋</button>
+      <button id="addBtn" class="icon-btn" type="button" aria-label="Ajouter une destination">＋</button>
     </header>
 
-    <section class="provider-card" aria-label="Application de navigation">
+    <section class="provider-card" aria-label="Application GPS">
       <span>Ouvrir avec</span>
-      <div class="segmented" role="group" aria-label="Choisir l'application GPS">
-        <button class="provider active" data-provider="google">Google Maps</button>
-        <button class="provider" data-provider="waze">Waze</button>
+      <div class="segmented">
+        <button class="provider" type="button" data-provider="google">Google Maps</button>
+        <button class="provider" type="button" data-provider="waze">Waze</button>
       </div>
     </section>
 
     <label class="searchbox">
       <span>⌕</span>
-      <input id="searchInput" type="search" placeholder="Rechercher une destination" autocomplete="off" />
+      <input id="searchInput" type="search" placeholder="Rechercher dans mes destinations" autocomplete="off" />
     </label>
 
     <section>
-      <div class="section-heading">
+      <div class="section-head">
         <h2>Favoris</h2>
         <span id="countLabel"></span>
       </div>
-      <div id="destinationsGrid" class="destinations-grid"></div>
-      <p id="emptyState" class="empty-state" hidden>Aucune destination trouvée.</p>
+      <div id="destinationsGrid" class="grid"></div>
+      <div id="emptyState" class="empty" hidden>Aucune destination trouvée.</div>
+      <p class="hint">La recherche filtre uniquement les destinations que tu as enregistrées.</p>
     </section>
   </main>
 
-  <dialog id="destinationDialog">
-    <form id="destinationForm" method="dialog">
-      <div class="dialog-head">
+  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
         <div>
           <p class="eyebrow">DESTINATION</p>
-          <h2 id="dialogTitle">Ajouter</h2>
+          <h2 id="modalTitle">Ajouter</h2>
         </div>
-        <button type="button" id="closeDialogBtn" class="icon-btn small" aria-label="Fermer">×</button>
+        <button id="closeBtn" class="close-btn" type="button" aria-label="Fermer">×</button>
       </div>
 
-      <input type="hidden" id="destinationId" />
+      <form id="destinationForm" novalidate>
+        <label class="form-label">Nom
+          <input id="nameInput" maxlength="40" placeholder="Ex. Maison" autocomplete="off" />
+        </label>
+        <label class="form-label">Adresse ou lieu
+          <input id="addressInput" maxlength="180" placeholder="Ex. 10 avenue des Champs-Élysées, Paris" autocomplete="street-address" />
+        </label>
+        <label class="form-label">Icône
+          <select id="iconInput">
+            <option>🏠</option><option>💼</option><option>⚽</option><option>🛒</option>
+            <option>🏋️</option><option>👨‍👩‍👦</option><option>⭐</option><option>📍</option>
+            <option>🍽️</option><option>🏥</option><option>✈️</option><option>🏨</option>
+          </select>
+        </label>
+        <p id="formError" class="error"></p>
+        <div class="actions">
+          <button id="deleteBtn" class="danger" type="button" hidden>Supprimer</button>
+          <button class="primary" type="submit">Enregistrer</button>
+        </div>
+      </form>
+    </section>
+  </div>
 
-      <label>
-        Nom
-        <input id="nameInput" required maxlength="40" placeholder="Ex. Maison" />
-      </label>
+  <script>
+    (() => {
+      'use strict';
 
-      <label>
-        Adresse ou lieu
-        <input id="addressInput" required maxlength="180" placeholder="Ex. 10 avenue des Champs-Élysées, Paris" />
-      </label>
+      const STORAGE_KEY = 'gps-destinations-v2';
+      const PROVIDER_KEY = 'gps-provider-v2';
 
-      <label>
-        Icône
-        <select id="iconInput">
-          <option>🏠</option>
-          <option>💼</option>
-          <option>⚽</option>
-          <option>🛒</option>
-          <option>🏋️</option>
-          <option>👨‍👩‍👦</option>
-          <option>⭐</option>
-          <option>📍</option>
-          <option>🍽️</option>
-          <option>🏥</option>
-          <option>✈️</option>
-          <option>🏨</option>
-        </select>
-      </label>
+      const makeId = () => {
+        if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
+        return 'd-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+      };
 
-      <div class="dialog-actions">
-        <button type="button" id="deleteBtn" class="danger" hidden>Supprimer</button>
-        <button type="submit" class="primary">Enregistrer</button>
-      </div>
-    </form>
-  </dialog>
+      const defaults = [
+        { id: makeId(), name: 'Maison', address: 'Votre adresse', icon: '🏠' },
+        { id: makeId(), name: 'Travail', address: 'Votre lieu de travail', icon: '💼' },
+        { id: makeId(), name: 'Courses', address: 'Votre centre commercial', icon: '🛒' },
+        { id: makeId(), name: 'Favori', address: 'Votre destination favorite', icon: '⭐' }
+      ];
 
-  <template id="destinationTemplate">
-    <article class="destination-card">
-      <button class="destination-open">
-        <span class="destination-icon"></span>
-        <span class="destination-copy">
-          <strong class="destination-name"></strong>
-          <small class="destination-address"></small>
-        </span>
-        <span class="arrow">›</span>
-      </button>
-      <button class="edit-btn" aria-label="Modifier la destination">•••</button>
-    </article>
-  </template>
+      const $ = (id) => document.getElementById(id);
+      const addBtn = $('addBtn');
+      const searchInput = $('searchInput');
+      const grid = $('destinationsGrid');
+      const countLabel = $('countLabel');
+      const emptyState = $('emptyState');
+      const modalBackdrop = $('modalBackdrop');
+      const closeBtn = $('closeBtn');
+      const modalTitle = $('modalTitle');
+      const form = $('destinationForm');
+      const nameInput = $('nameInput');
+      const addressInput = $('addressInput');
+      const iconInput = $('iconInput');
+      const deleteBtn = $('deleteBtn');
+      const formError = $('formError');
 
-  <script src="app.js" defer></script>
+      let editingId = null;
+      let provider = localStorage.getItem(PROVIDER_KEY) || 'google';
+      let destinations = load();
+
+      function load() {
+        try {
+          const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          return Array.isArray(data) ? data : defaults;
+        } catch (_) {
+          return defaults;
+        }
+      }
+
+      function save() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(destinations));
+      }
+
+      function normalize(value) {
+        return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      }
+
+      function navigationUrl(address) {
+        const q = encodeURIComponent(address.trim());
+        return provider === 'waze'
+          ? `https://www.waze.com/ul?q=${q}&navigate=yes`
+          : `https://www.google.com/maps/dir/?api=1&destination=${q}&travelmode=driving`;
+      }
+
+      function openNavigation(item) {
+        if (!item.address || /^votre /i.test(item.address)) {
+          openEdit(item.id);
+          return;
+        }
+        window.location.href = navigationUrl(item.address);
+      }
+
+      function render() {
+        const q = normalize(searchInput.value.trim());
+        const filtered = destinations.filter(item => normalize(item.name + ' ' + item.address).includes(q));
+        grid.innerHTML = '';
+
+        filtered.forEach(item => {
+          const card = document.createElement('article');
+          card.className = 'card';
+
+          const openBtn = document.createElement('button');
+          openBtn.type = 'button';
+          openBtn.className = 'open-destination';
+          openBtn.innerHTML = `
+            <span class="destination-icon"></span>
+            <span class="destination-copy"><strong></strong><small></small></span>
+            <span class="arrow">›</span>`;
+          openBtn.querySelector('.destination-icon').textContent = item.icon || '📍';
+          openBtn.querySelector('strong').textContent = item.name;
+          openBtn.querySelector('small').textContent = item.address;
+          openBtn.addEventListener('click', () => openNavigation(item));
+
+          const editBtn = document.createElement('button');
+          editBtn.type = 'button';
+          editBtn.className = 'edit-btn';
+          editBtn.textContent = '•••';
+          editBtn.setAttribute('aria-label', 'Modifier ' + item.name);
+          editBtn.addEventListener('click', () => openEdit(item.id));
+
+          card.append(openBtn, editBtn);
+          grid.appendChild(card);
+        });
+
+        countLabel.textContent = `${filtered.length} destination${filtered.length > 1 ? 's' : ''}`;
+        emptyState.hidden = filtered.length !== 0;
+      }
+
+      function openModal() {
+        modalBackdrop.classList.add('open');
+        modalBackdrop.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => nameInput.focus(), 100);
+      }
+
+      function closeModal() {
+        modalBackdrop.classList.remove('open');
+        modalBackdrop.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        editingId = null;
+        formError.textContent = '';
+      }
+
+      function openAdd() {
+        editingId = null;
+        modalTitle.textContent = 'Ajouter';
+        nameInput.value = '';
+        addressInput.value = '';
+        iconInput.value = '📍';
+        deleteBtn.hidden = true;
+        formError.textContent = '';
+        openModal();
+      }
+
+      function openEdit(id) {
+        const item = destinations.find(d => d.id === id);
+        if (!item) return;
+        editingId = id;
+        modalTitle.textContent = 'Modifier';
+        nameInput.value = item.name;
+        addressInput.value = /^votre /i.test(item.address) ? '' : item.address;
+        iconInput.value = item.icon || '📍';
+        deleteBtn.hidden = false;
+        formError.textContent = '';
+        openModal();
+      }
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const name = nameInput.value.trim();
+        const address = addressInput.value.trim();
+        const icon = iconInput.value || '📍';
+
+        if (!name || !address) {
+          formError.textContent = 'Indique un nom et une adresse.';
+          return;
+        }
+
+        if (editingId) {
+          destinations = destinations.map(d => d.id === editingId ? { ...d, name, address, icon } : d);
+        } else {
+          destinations.unshift({ id: makeId(), name, address, icon });
+        }
+
+        save();
+        closeModal();
+        render();
+      });
+
+      deleteBtn.addEventListener('click', () => {
+        if (!editingId) return;
+        destinations = destinations.filter(d => d.id !== editingId);
+        save();
+        closeModal();
+        render();
+      });
+
+      addBtn.addEventListener('click', openAdd);
+      closeBtn.addEventListener('click', closeModal);
+      searchInput.addEventListener('input', render);
+      modalBackdrop.addEventListener('click', (event) => {
+        if (event.target === modalBackdrop) closeModal();
+      });
+
+      document.querySelectorAll('.provider').forEach(button => {
+        button.classList.toggle('active', button.dataset.provider === provider);
+        button.addEventListener('click', () => {
+          provider = button.dataset.provider;
+          localStorage.setItem(PROVIDER_KEY, provider);
+          document.querySelectorAll('.provider').forEach(btn => btn.classList.toggle('active', btn === button));
+        });
+      });
+
+      render();
+    })();
+  </script>
 </body>
 </html>
