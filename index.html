@@ -3,25 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#07080c" />
+  <meta name="theme-color" content="#0b0b0f" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Destinations" />
-  <title>Mes destinations · V3</title>
+  <title>Mes destinations</title>
   <style>
     :root {
       color-scheme: dark;
       --bg: #07080c;
-      --panel: rgba(25, 27, 34, .96);
-      --panel2: rgba(38, 41, 51, .94);
-      --text: #f8f8fb;
-      --muted: #9da3b1;
+      --panel: rgba(25, 27, 34, 0.94);
+      --panel2: rgba(36, 39, 48, 0.9);
+      --text: #f7f7fb;
+      --muted: #a4a9b5;
       --line: rgba(255,255,255,.09);
       --accent: #5b8cff;
-      --accent2: #7ca3ff;
-      --success: #72d5ae;
-      --danger: #ff737a;
-      --shadow: 0 18px 60px rgba(0,0,0,.28);
+      --danger: #ff626a;
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html, body { min-height: 100%; }
@@ -29,8 +26,8 @@
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at 90% -8%, rgba(91,140,255,.24), transparent 34%),
-        radial-gradient(circle at -10% 30%, rgba(72,209,181,.08), transparent 32%),
+        radial-gradient(circle at 90% -10%, rgba(85,112,255,.25), transparent 38%),
+        radial-gradient(circle at -10% 25%, rgba(58,201,182,.09), transparent 35%),
         var(--bg);
       color: var(--text);
     }
@@ -39,80 +36,38 @@
     .app {
       width: min(760px, 100%);
       margin: 0 auto;
-      padding: calc(env(safe-area-inset-top) + 20px) 16px calc(env(safe-area-inset-bottom) + 36px);
+      padding: calc(env(safe-area-inset-top) + 22px) 16px calc(env(safe-area-inset-bottom) + 32px);
     }
-    .topbar, .section-head, .modal-head, .actions, .provider-card, .selected-actions {
+    .topbar, .section-head, .modal-head, .actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
     }
-    .eyebrow { margin: 0 0 4px; color: var(--muted); font-size: 11px; font-weight: 850; letter-spacing: .15em; }
-    h1 { margin: 0; font-size: 31px; letter-spacing: -.035em; }
+    .eyebrow { margin: 0 0 3px; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .14em; }
+    h1 { margin: 0; font-size: 31px; letter-spacing: -.03em; }
     h2 { margin: 0; font-size: 20px; }
     .icon-btn {
-      width: 50px; height: 50px; border: 0; border-radius: 17px;
-      background: var(--panel2); font-size: 29px; display: grid; place-items: center;
+      width: 48px; height: 48px; border: 0; border-radius: 16px;
+      background: var(--panel2); font-size: 28px; display: grid; place-items: center;
       box-shadow: inset 0 0 0 1px var(--line);
     }
     .provider-card {
-      margin-top: 20px; padding: 14px 15px; border-radius: 20px; background: var(--panel);
+      margin-top: 22px; padding: 15px; border-radius: 20px; background: var(--panel);
       box-shadow: inset 0 0 0 1px var(--line);
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
     }
-    .provider-card > span { color: var(--muted); font-weight: 760; }
-    .segmented { display: flex; gap: 5px; background: #111319; padding: 4px; border-radius: 13px; }
-    .provider { border: 0; border-radius: 10px; padding: 9px 11px; background: transparent; font-weight: 820; color: var(--muted); }
+    .provider-card > span { color: var(--muted); font-weight: 700; }
+    .segmented { display: flex; gap: 6px; background: #111319; padding: 4px; border-radius: 13px; }
+    .provider { border: 0; border-radius: 10px; padding: 9px 11px; background: transparent; font-weight: 800; color: var(--muted); }
     .provider.active { background: var(--panel2); color: white; }
-
-    .api-banner {
-      margin-top: 14px; padding: 13px 15px; border-radius: 16px; background: rgba(255,187,74,.10);
-      border: 1px solid rgba(255,187,74,.25); color: #ffd495; font-size: 13px; line-height: 1.35;
-    }
-    .api-banner[hidden] { display: none; }
-
-    .maps-search-wrap { margin-top: 14px; position: relative; }
     .searchbox {
-      padding: 0 15px; height: 56px; display: flex; align-items: center; gap: 10px;
+      margin: 14px 0 24px; padding: 0 15px; height: 54px; display: flex; align-items: center; gap: 10px;
       background: var(--panel); border-radius: 18px; box-shadow: inset 0 0 0 1px var(--line);
     }
-    .searchbox .magnifier { font-size: 21px; color: var(--muted); }
+    .searchbox span { font-size: 23px; color: var(--muted); }
     .searchbox input { flex: 1; border: 0; outline: 0; background: transparent; color: white; font-size: 16px; min-width: 0; }
-    .searchbox input::placeholder { color: #7d8491; }
-    .spinner { width: 17px; height: 17px; border-radius: 50%; border: 2px solid rgba(255,255,255,.16); border-top-color: white; animation: spin .7s linear infinite; }
-    .spinner[hidden] { display: none; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .suggestions {
-      margin: 8px 0 0; padding: 6px; list-style: none; border-radius: 18px;
-      background: rgba(21,23,30,.985); border: 1px solid var(--line); box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .suggestions[hidden] { display: none; }
-    .suggestion-label { padding: 7px 10px 5px; color: var(--muted); font-size: 11px; font-weight: 850; letter-spacing: .09em; }
-    .suggestion-btn {
-      width: 100%; border: 0; background: transparent; text-align: left; display: flex; align-items: center; gap: 11px;
-      padding: 12px 10px; border-radius: 13px;
-    }
-    .suggestion-btn:active { background: rgba(255,255,255,.06); }
-    .suggestion-icon { width: 36px; height: 36px; border-radius: 11px; background: var(--panel2); display: grid; place-items: center; flex: 0 0 auto; }
-    .suggestion-copy { min-width: 0; }
-    .suggestion-copy strong, .suggestion-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .suggestion-copy strong { font-size: 15px; }
-    .suggestion-copy small { margin-top: 3px; color: var(--muted); font-size: 12px; }
-
-    .selected-place {
-      margin-top: 10px; padding: 15px; border-radius: 19px; background: rgba(91,140,255,.09);
-      border: 1px solid rgba(91,140,255,.23);
-    }
-    .selected-place[hidden] { display: none; }
-    .selected-place strong, .selected-place small { display: block; }
-    .selected-place strong { font-size: 17px; margin-bottom: 4px; }
-    .selected-place small { color: var(--muted); line-height: 1.35; }
-    .selected-actions { margin-top: 13px; justify-content: flex-start; }
-    .mini-btn { border: 0; border-radius: 12px; padding: 10px 13px; font-weight: 820; background: var(--panel2); }
-    .mini-btn.primary { background: var(--accent); }
-
-    .section { margin-top: 26px; }
+    .searchbox input::placeholder { color: #7f8592; }
     .section-head { margin-bottom: 11px; }
     #countLabel { color: var(--muted); font-size: 14px; }
     .grid { display: grid; gap: 11px; }
@@ -130,47 +85,36 @@
     .destination-copy strong, .destination-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .destination-copy strong { font-size: 17px; margin-bottom: 4px; }
     .destination-copy small { color: var(--muted); font-size: 13px; }
-    .arrow { color: var(--muted); font-size: 28px; }
+    .arrow { color: var(--muted); font-size: 29px; }
     .edit-btn { width: 52px; border: 0; border-left: 1px solid var(--line); background: transparent; font-size: 20px; color: var(--muted); }
     .empty { padding: 34px 12px; text-align: center; color: var(--muted); }
-    .hint { margin: 10px 2px 0; color: #757c89; font-size: 12px; line-height: 1.4; }
+    .hint { margin: 10px 2px 0; color: #767d8b; font-size: 12px; }
 
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0,0,0,.64); backdrop-filter: blur(8px);
-      display: none; align-items: flex-end; justify-content: center; z-index: 1000; padding: 12px;
+      position: fixed; inset: 0; background: rgba(0,0,0,.62); backdrop-filter: blur(8px);
+      display: none; align-items: flex-end; justify-content: center; z-index: 1000;
+      padding: 12px;
     }
     .modal-backdrop.open { display: flex; }
     .modal {
-      width: min(620px, 100%); max-height: min(88vh, 760px); overflow: auto;
-      background: #15171e; border-radius: 26px; padding: 18px;
-      box-shadow: 0 22px 80px rgba(0,0,0,.55), inset 0 0 0 1px var(--line);
+      width: min(620px, 100%); background: #15171e; border-radius: 26px;
+      padding: 18px; box-shadow: 0 22px 80px rgba(0,0,0,.55), inset 0 0 0 1px var(--line);
       margin-bottom: env(safe-area-inset-bottom);
     }
     .close-btn { width: 40px; height: 40px; border: 0; border-radius: 13px; background: var(--panel2); font-size: 23px; }
-    .modal-search { margin-top: 16px; }
-    .form-label { display: block; margin-top: 15px; color: var(--muted); font-weight: 720; font-size: 13px; }
+    .form-label { display: block; margin-top: 16px; color: var(--muted); font-weight: 700; font-size: 13px; }
     .form-label input, .form-label select {
       display: block; width: 100%; margin-top: 7px; border: 1px solid var(--line); outline: none;
       background: #0d0f14; color: white; border-radius: 14px; padding: 14px; font-size: 16px;
     }
     .form-label input:focus, .form-label select:focus { border-color: rgba(91,140,255,.75); }
-    .coordinate-note { margin-top: 8px; color: #717887; font-size: 11px; }
     .actions { margin-top: 21px; }
     .primary, .danger {
       min-height: 48px; border: 0; border-radius: 14px; padding: 0 18px; font-weight: 850;
     }
     .primary { background: var(--accent); color: white; margin-left: auto; }
-    .danger { background: rgba(255,115,122,.13); color: #ff979c; }
-    .error { min-height: 18px; margin: 10px 0 0; color: #ff969c; font-size: 13px; }
-    .success { min-height: 18px; margin: 10px 0 0; color: var(--success); font-size: 13px; }
-
-    .toast {
-      position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 22px); transform: translate(-50%, 18px);
-      background: rgba(29,32,40,.98); border: 1px solid var(--line); box-shadow: var(--shadow);
-      border-radius: 14px; padding: 11px 15px; font-size: 13px; opacity: 0; pointer-events: none; transition: .22s ease; z-index: 2000;
-      max-width: calc(100vw - 34px); text-align: center;
-    }
-    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .danger { background: rgba(255,98,106,.14); color: #ff8c92; }
+    .error { min-height: 18px; margin: 10px 0 0; color: #ff9298; font-size: 13px; }
 
     @media (min-width: 600px) {
       .grid { grid-template-columns: 1fr 1fr; }
@@ -196,36 +140,19 @@
       </div>
     </section>
 
-    <div id="apiBanner" class="api-banner" hidden>
-      Recherche Google Maps non configurée. Ajoute ta clé Google Maps Platform dans <strong>GOOGLE_MAPS_API_KEY</strong> dans ce fichier.
-    </div>
+    <label class="searchbox">
+      <span>⌕</span>
+      <input id="searchInput" type="search" placeholder="Rechercher dans mes destinations" autocomplete="off" />
+    </label>
 
-    <section class="maps-search-wrap" aria-label="Recherche Google Maps">
-      <label class="searchbox">
-        <span class="magnifier">⌕</span>
-        <input id="mapsSearchInput" type="search" placeholder="Rechercher une adresse ou un lieu…" autocomplete="off" autocorrect="off" spellcheck="false" />
-        <span id="mapsSpinner" class="spinner" hidden></span>
-      </label>
-      <ul id="mapsSuggestions" class="suggestions" hidden></ul>
-
-      <div id="selectedPlace" class="selected-place" hidden>
-        <strong id="selectedPlaceName"></strong>
-        <small id="selectedPlaceAddress"></small>
-        <div class="selected-actions">
-          <button id="goSelectedBtn" class="mini-btn primary" type="button">Itinéraire</button>
-          <button id="saveSelectedBtn" class="mini-btn" type="button">＋ Favori</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
+    <section>
       <div class="section-head">
         <h2>Favoris</h2>
         <span id="countLabel"></span>
       </div>
       <div id="destinationsGrid" class="grid"></div>
-      <div id="emptyState" class="empty" hidden>Aucune destination enregistrée.</div>
-      <p class="hint">Touchez un favori pour lancer directement le guidage. La recherche ci-dessus interroge Google Places et peut aussi retrouver tes favoris.</p>
+      <div id="emptyState" class="empty" hidden>Aucune destination trouvée.</div>
+      <p class="hint">La recherche filtre uniquement les destinations que tu as enregistrées.</p>
     </section>
   </main>
 
@@ -239,21 +166,12 @@
         <button id="closeBtn" class="close-btn" type="button" aria-label="Fermer">×</button>
       </div>
 
-      <div id="modalSearchWrap" class="modal-search">
-        <label class="searchbox">
-          <span class="magnifier">⌕</span>
-          <input id="modalMapsSearchInput" type="search" placeholder="Chercher dans Google Maps…" autocomplete="off" autocorrect="off" spellcheck="false" />
-          <span id="modalMapsSpinner" class="spinner" hidden></span>
-        </label>
-        <ul id="modalMapsSuggestions" class="suggestions" hidden></ul>
-      </div>
-
       <form id="destinationForm" novalidate>
         <label class="form-label">Nom
-          <input id="nameInput" maxlength="60" placeholder="Ex. Maison" autocomplete="off" />
+          <input id="nameInput" maxlength="40" placeholder="Ex. Maison" autocomplete="off" />
         </label>
-        <label class="form-label">Adresse
-          <input id="addressInput" maxlength="220" placeholder="Adresse sélectionnée ou saisie manuellement" autocomplete="street-address" />
+        <label class="form-label">Adresse ou lieu
+          <input id="addressInput" maxlength="180" placeholder="Ex. 10 avenue des Champs-Élysées, Paris" autocomplete="street-address" />
         </label>
         <label class="form-label">Icône
           <select id="iconInput">
@@ -262,9 +180,7 @@
             <option>🍽️</option><option>🏥</option><option>✈️</option><option>🏨</option>
           </select>
         </label>
-        <div id="coordinateNote" class="coordinate-note"></div>
         <p id="formError" class="error"></p>
-        <p id="formSuccess" class="success"></p>
         <div class="actions">
           <button id="deleteBtn" class="danger" type="button" hidden>Supprimer</button>
           <button class="primary" type="submit">Enregistrer</button>
@@ -273,149 +189,133 @@
     </section>
   </div>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
   <script>
     (() => {
       'use strict';
 
-      // ================================================================
-      // CONFIGURATION V3
-      // Colle ici ta clé Google Maps Platform après avoir activé :
-      // - Maps JavaScript API
-      // - Places API (New)
-      // ================================================================
-      const GOOGLE_MAPS_API_KEY = 'PASTE_YOUR_GOOGLE_MAPS_API_KEY_HERE';
-
       const STORAGE_KEY = 'gps-destinations-v3';
-      const OLD_STORAGE_KEY = 'gps-destinations-v2';
       const PROVIDER_KEY = 'gps-provider-v3';
+      const LEGACY_STORAGE_KEYS = ['gps-destinations-v2', 'gps-destinations-v1'];
+      const LEGACY_PROVIDER_KEYS = ['gps-provider-v2', 'gps-provider-v1'];
 
       const makeId = () => {
         if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
         return 'd-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
       };
 
+      const defaults = [
+        { id: makeId(), name: 'Maison', address: "8 allée de l'Orge, 91390 Morsang-sur-Orge, France", icon: '🏠' },
+        { id: makeId(), name: 'Châtillon', address: "2 rue d'Esneux Tilf, 21400 Châtillon-sur-Seine, France", icon: '📍' },
+        { id: makeId(), name: 'Châtillon GRESSET', address: "30 rue Général de Gaulle, 21400 Châtillon-sur-Seine, France", icon: '🏡' },
+        { id: makeId(), name: 'Crespy', address: "10 rue Charles Herbelot, 10300 Crespy-le-Neuf, France", icon: '📍' },
+        { id: makeId(), name: 'Travail', address: "1 avenue Carnot, 91300 Massy, France", icon: '💼' },
+        { id: makeId(), name: 'Alderys', address: "Alderys, Avenue de Paris, Orsay, France", icon: '🏢' }
+      ];
+
       const $ = (id) => document.getElementById(id);
       const addBtn = $('addBtn');
+      const searchInput = $('searchInput');
       const grid = $('destinationsGrid');
       const countLabel = $('countLabel');
       const emptyState = $('emptyState');
-      const mapsSearchInput = $('mapsSearchInput');
-      const mapsSuggestions = $('mapsSuggestions');
-      const mapsSpinner = $('mapsSpinner');
-      const selectedPlaceBox = $('selectedPlace');
-      const selectedPlaceName = $('selectedPlaceName');
-      const selectedPlaceAddress = $('selectedPlaceAddress');
-      const goSelectedBtn = $('goSelectedBtn');
-      const saveSelectedBtn = $('saveSelectedBtn');
-      const apiBanner = $('apiBanner');
       const modalBackdrop = $('modalBackdrop');
       const closeBtn = $('closeBtn');
       const modalTitle = $('modalTitle');
-      const modalSearchWrap = $('modalSearchWrap');
-      const modalMapsSearchInput = $('modalMapsSearchInput');
-      const modalMapsSuggestions = $('modalMapsSuggestions');
-      const modalMapsSpinner = $('modalMapsSpinner');
       const form = $('destinationForm');
       const nameInput = $('nameInput');
       const addressInput = $('addressInput');
       const iconInput = $('iconInput');
       const deleteBtn = $('deleteBtn');
-      const coordinateNote = $('coordinateNote');
       const formError = $('formError');
-      const formSuccess = $('formSuccess');
-      const toast = $('toast');
 
-      let provider = localStorage.getItem(PROVIDER_KEY) || 'google';
-      let destinations = loadDestinations();
       let editingId = null;
-      let editingLat = null;
-      let editingLng = null;
-      let selectedSearchPlace = null;
-      let placesLib = null;
-      let googleReady = false;
-      let mainSessionToken = null;
-      let modalSessionToken = null;
-      let newestMainRequest = 0;
-      let newestModalRequest = 0;
-      let toastTimer = null;
+      let provider = loadProvider();
+      let destinations = load();
 
-      function loadDestinations() {
-        const read = (key) => {
-          try {
-            const data = JSON.parse(localStorage.getItem(key));
-            return Array.isArray(data) ? data : null;
-          } catch (_) {
-            return null;
+      function loadProvider() {
+        const current = localStorage.getItem(PROVIDER_KEY);
+        if (current === 'google' || current === 'waze') return current;
+
+        for (const key of LEGACY_PROVIDER_KEYS) {
+          const legacy = localStorage.getItem(key);
+          if (legacy === 'google' || legacy === 'waze') {
+            localStorage.setItem(PROVIDER_KEY, legacy);
+            return legacy;
           }
-        };
-        const v3 = read(STORAGE_KEY);
-        if (v3) return v3;
-        const v2 = read(OLD_STORAGE_KEY);
-        if (v2) {
-          const migrated = v2.map(item => ({ ...item, lat: item.lat ?? null, lng: item.lng ?? null }));
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
-          return migrated;
         }
-        return [];
+        return 'google';
       }
 
-      function saveDestinations() {
+      function isPlaceholder(item) {
+        return !item || !item.address || /^votre\s/i.test(String(item.address).trim());
+      }
+
+      function uniqueDestinations(items) {
+        const seen = new Set();
+        return items.filter(item => {
+          const key = normalize(`${item.name}|${item.address}`);
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+      }
+
+      function load() {
+        try {
+          const current = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (Array.isArray(current) && current.length) return current;
+        } catch (_) {}
+
+        let legacyCustom = [];
+        for (const key of LEGACY_STORAGE_KEYS) {
+          try {
+            const data = JSON.parse(localStorage.getItem(key));
+            if (Array.isArray(data)) {
+              legacyCustom.push(...data.filter(item => !isPlaceholder(item)));
+            }
+          } catch (_) {}
+        }
+
+        const migrated = uniqueDestinations([...defaults, ...legacyCustom]);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+        return migrated;
+      }
+
+      function save() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(destinations));
       }
 
-      function showToast(message) {
-        clearTimeout(toastTimer);
-        toast.textContent = message;
-        toast.classList.add('show');
-        toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
-      }
-
       function normalize(value) {
-        return String(value || '')
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLowerCase();
+        return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
       }
 
-      function locationString(item) {
-        if (Number.isFinite(item?.lat) && Number.isFinite(item?.lng)) return `${item.lat},${item.lng}`;
-        return item?.address || '';
-      }
-
-      function navigationUrl(item) {
-        const destination = locationString(item).trim();
-        if (!destination) return null;
-        if (provider === 'waze') {
-          if (Number.isFinite(item?.lat) && Number.isFinite(item?.lng)) {
-            return `https://www.waze.com/ul?ll=${encodeURIComponent(item.lat + ',' + item.lng)}&navigate=yes`;
-          }
-          return `https://www.waze.com/ul?q=${encodeURIComponent(destination)}&navigate=yes`;
-        }
-        return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}&travelmode=driving`;
+      function navigationUrl(address) {
+        const q = encodeURIComponent(address.trim());
+        return provider === 'waze'
+          ? `https://www.waze.com/ul?q=${q}&navigate=yes`
+          : `https://www.google.com/maps/dir/?api=1&destination=${q}&travelmode=driving`;
       }
 
       function openNavigation(item) {
-        const url = navigationUrl(item);
-        if (!url) return;
-        window.location.assign(url);
+        if (!item.address || /^votre /i.test(item.address)) {
+          openEdit(item.id);
+          return;
+        }
+        window.location.href = navigationUrl(item.address);
       }
 
-      function renderFavorites(filter = '') {
-        const q = normalize(filter);
-        const filtered = q
-          ? destinations.filter(item => normalize(`${item.name} ${item.address}`).includes(q))
-          : destinations;
+      function render() {
+        const q = normalize(searchInput.value.trim());
+        const filtered = destinations.filter(item => normalize(item.name + ' ' + item.address).includes(q));
+        grid.innerHTML = '';
 
-        grid.replaceChildren();
-        for (const item of filtered) {
+        filtered.forEach(item => {
           const card = document.createElement('article');
           card.className = 'card';
 
           const openBtn = document.createElement('button');
-          openBtn.className = 'open-destination';
           openBtn.type = 'button';
+          openBtn.className = 'open-destination';
           openBtn.innerHTML = `
             <span class="destination-icon"></span>
             <span class="destination-copy"><strong></strong><small></small></span>
@@ -426,374 +326,106 @@
           openBtn.addEventListener('click', () => openNavigation(item));
 
           const editBtn = document.createElement('button');
-          editBtn.className = 'edit-btn';
           editBtn.type = 'button';
-          editBtn.setAttribute('aria-label', `Modifier ${item.name}`);
+          editBtn.className = 'edit-btn';
           editBtn.textContent = '•••';
-          editBtn.addEventListener('click', () => openEditModal(item.id));
+          editBtn.setAttribute('aria-label', 'Modifier ' + item.name);
+          editBtn.addEventListener('click', () => openEdit(item.id));
 
           card.append(openBtn, editBtn);
           grid.appendChild(card);
-        }
+        });
 
-        countLabel.textContent = `${destinations.length} favori${destinations.length > 1 ? 's' : ''}`;
+        countLabel.textContent = `${filtered.length} destination${filtered.length > 1 ? 's' : ''}`;
         emptyState.hidden = filtered.length !== 0;
       }
 
-      function renderSuggestions(container, predictions, onChoose, localMatches = []) {
-        container.replaceChildren();
-
-        if (localMatches.length) {
-          const label = document.createElement('li');
-          label.className = 'suggestion-label';
-          label.textContent = 'MES FAVORIS';
-          container.appendChild(label);
-
-          for (const item of localMatches.slice(0, 3)) {
-            const li = document.createElement('li');
-            const btn = document.createElement('button');
-            btn.className = 'suggestion-btn';
-            btn.type = 'button';
-            btn.innerHTML = `<span class="suggestion-icon"></span><span class="suggestion-copy"><strong></strong><small></small></span>`;
-            btn.querySelector('.suggestion-icon').textContent = item.icon || '⭐';
-            btn.querySelector('strong').textContent = item.name;
-            btn.querySelector('small').textContent = item.address;
-            btn.addEventListener('click', () => openNavigation(item));
-            li.appendChild(btn);
-            container.appendChild(li);
-          }
-        }
-
-        if (predictions.length) {
-          const label = document.createElement('li');
-          label.className = 'suggestion-label';
-          label.textContent = 'GOOGLE MAPS';
-          container.appendChild(label);
-
-          for (const prediction of predictions.slice(0, 6)) {
-            const li = document.createElement('li');
-            const btn = document.createElement('button');
-            btn.className = 'suggestion-btn';
-            btn.type = 'button';
-            btn.innerHTML = `<span class="suggestion-icon">📍</span><span class="suggestion-copy"><strong></strong><small>Google Places</small></span>`;
-            btn.querySelector('strong').textContent = prediction.text.toString();
-            btn.addEventListener('click', () => onChoose(prediction));
-            li.appendChild(btn);
-            container.appendChild(li);
-          }
-        }
-
-        container.hidden = container.children.length === 0;
-      }
-
-      function clearSuggestions(container) {
-        container.replaceChildren();
-        container.hidden = true;
-      }
-
-      function localMatchesFor(query) {
-        const q = normalize(query);
-        if (!q) return [];
-        return destinations.filter(item => normalize(`${item.name} ${item.address}`).includes(q));
-      }
-
-      function debounce(fn, wait = 280) {
-        let timer;
-        return (...args) => {
-          clearTimeout(timer);
-          timer = setTimeout(() => fn(...args), wait);
-        };
-      }
-
-      async function searchGooglePlaces(query, mode) {
-        const isMain = mode === 'main';
-        const container = isMain ? mapsSuggestions : modalMapsSuggestions;
-        const spinner = isMain ? mapsSpinner : modalMapsSpinner;
-        const localMatches = isMain ? localMatchesFor(query) : [];
-
-        if (!query.trim()) {
-          clearSuggestions(container);
-          spinner.hidden = true;
-          if (isMain) renderFavorites();
-          return;
-        }
-
-        if (isMain) renderFavorites(query);
-
-        if (!googleReady || !placesLib || query.trim().length < 2) {
-          renderSuggestions(container, [], () => {}, localMatches);
-          return;
-        }
-
-        const requestId = isMain ? ++newestMainRequest : ++newestModalRequest;
-        spinner.hidden = false;
-
-        try {
-          const { AutocompleteSessionToken, AutocompleteSuggestion } = placesLib;
-          if (isMain && !mainSessionToken) mainSessionToken = new AutocompleteSessionToken();
-          if (!isMain && !modalSessionToken) modalSessionToken = new AutocompleteSessionToken();
-
-          const request = {
-            input: query.trim(),
-            language: 'fr-FR',
-            region: 'fr',
-            sessionToken: isMain ? mainSessionToken : modalSessionToken,
-          };
-
-          const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions(request);
-          const newest = isMain ? newestMainRequest : newestModalRequest;
-          if (requestId !== newest) return;
-
-          const predictions = suggestions.map(s => s.placePrediction).filter(Boolean);
-          renderSuggestions(
-            container,
-            predictions,
-            (prediction) => selectPrediction(prediction, mode),
-            localMatches
-          );
-        } catch (error) {
-          console.error('Places autocomplete error:', error);
-          renderSuggestions(container, [], () => {}, localMatches);
-          if (!localMatches.length) {
-            const li = document.createElement('li');
-            li.className = 'suggestion-label';
-            li.textContent = 'Recherche Google Maps indisponible';
-            container.appendChild(li);
-            container.hidden = false;
-          }
-        } finally {
-          spinner.hidden = true;
-        }
-      }
-
-      async function selectPrediction(prediction, mode) {
-        const isMain = mode === 'main';
-        const container = isMain ? mapsSuggestions : modalMapsSuggestions;
-        const input = isMain ? mapsSearchInput : modalMapsSearchInput;
-        clearSuggestions(container);
-
-        try {
-          const place = prediction.toPlace();
-          await place.fetchFields({ fields: ['displayName', 'formattedAddress', 'location'] });
-
-          const data = {
-            name: place.displayName || prediction.text.toString(),
-            address: place.formattedAddress || prediction.text.toString(),
-            lat: place.location ? place.location.lat() : null,
-            lng: place.location ? place.location.lng() : null,
-          };
-
-          if (isMain) {
-            selectedSearchPlace = data;
-            selectedPlaceName.textContent = data.name;
-            selectedPlaceAddress.textContent = data.address;
-            selectedPlaceBox.hidden = false;
-            input.value = data.name;
-            mainSessionToken = null;
-            renderFavorites();
-          } else {
-            nameInput.value = data.name;
-            addressInput.value = data.address;
-            editingLat = data.lat;
-            editingLng = data.lng;
-            updateCoordinateNote();
-            input.value = data.name;
-            modalSessionToken = null;
-            formSuccess.textContent = 'Adresse Google Maps sélectionnée ✓';
-            setTimeout(() => { formSuccess.textContent = ''; }, 1800);
-          }
-        } catch (error) {
-          console.error('Place details error:', error);
-          showToast('Impossible de récupérer les détails de ce lieu.');
-        }
-      }
-
-      function updateCoordinateNote() {
-        coordinateNote.textContent = Number.isFinite(editingLat) && Number.isFinite(editingLng)
-          ? `Coordonnées GPS enregistrées : ${editingLat.toFixed(5)}, ${editingLng.toFixed(5)}`
-          : 'Aucune coordonnée GPS : le guidage utilisera le texte de l’adresse.';
-      }
-
-      function openAddModal(prefill = null) {
-        editingId = null;
-        editingLat = prefill?.lat ?? null;
-        editingLng = prefill?.lng ?? null;
-        modalTitle.textContent = 'Ajouter';
-        deleteBtn.hidden = true;
-        nameInput.value = prefill?.name || '';
-        addressInput.value = prefill?.address || '';
-        iconInput.value = '📍';
-        modalMapsSearchInput.value = prefill?.name || '';
-        formError.textContent = '';
-        formSuccess.textContent = '';
-        modalSessionToken = null;
-        clearSuggestions(modalMapsSuggestions);
-        updateCoordinateNote();
+      function openModal() {
         modalBackdrop.classList.add('open');
         modalBackdrop.setAttribute('aria-hidden', 'false');
-        setTimeout(() => modalMapsSearchInput.focus(), 70);
-      }
-
-      function openEditModal(id) {
-        const item = destinations.find(d => d.id === id);
-        if (!item) return;
-        editingId = id;
-        editingLat = Number.isFinite(item.lat) ? item.lat : null;
-        editingLng = Number.isFinite(item.lng) ? item.lng : null;
-        modalTitle.textContent = 'Modifier';
-        deleteBtn.hidden = false;
-        nameInput.value = item.name;
-        addressInput.value = item.address;
-        iconInput.value = item.icon || '📍';
-        modalMapsSearchInput.value = '';
-        formError.textContent = '';
-        formSuccess.textContent = '';
-        modalSessionToken = null;
-        clearSuggestions(modalMapsSuggestions);
-        updateCoordinateNote();
-        modalBackdrop.classList.add('open');
-        modalBackdrop.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => nameInput.focus(), 100);
       }
 
       function closeModal() {
         modalBackdrop.classList.remove('open');
         modalBackdrop.setAttribute('aria-hidden', 'true');
-        clearSuggestions(modalMapsSuggestions);
+        document.body.style.overflow = '';
         editingId = null;
-        modalSessionToken = null;
+        formError.textContent = '';
       }
 
-      function loadGoogleMaps() {
-        if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY.includes('PASTE_YOUR')) {
-          apiBanner.hidden = false;
-          return;
-        }
-
-        window.gm_authFailure = () => {
-          googleReady = false;
-          apiBanner.hidden = false;
-          apiBanner.innerHTML = 'Clé Google Maps refusée. Vérifie les restrictions de la clé et que <strong>Maps JavaScript API</strong> + <strong>Places API (New)</strong> sont activées.';
-        };
-
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(GOOGLE_MAPS_API_KEY)}&loading=async&libraries=places&v=weekly&callback=initGoogleMapsV3`;
-        script.async = true;
-        script.onerror = () => {
-          apiBanner.hidden = false;
-          apiBanner.textContent = 'Impossible de charger Google Maps Platform.';
-        };
-        document.head.appendChild(script);
+      function openAdd() {
+        editingId = null;
+        modalTitle.textContent = 'Ajouter';
+        nameInput.value = '';
+        addressInput.value = '';
+        iconInput.value = '📍';
+        deleteBtn.hidden = true;
+        formError.textContent = '';
+        openModal();
       }
 
-      window.initGoogleMapsV3 = async () => {
-        try {
-          placesLib = await google.maps.importLibrary('places');
-          googleReady = true;
-          apiBanner.hidden = true;
-        } catch (error) {
-          console.error(error);
-          apiBanner.hidden = false;
-          apiBanner.textContent = 'Places API (New) ne peut pas être initialisée.';
-        }
-      };
-
-      const debouncedMainSearch = debounce((value) => searchGooglePlaces(value, 'main'));
-      const debouncedModalSearch = debounce((value) => searchGooglePlaces(value, 'modal'));
-
-      mapsSearchInput.addEventListener('input', (event) => {
-        selectedPlaceBox.hidden = true;
-        selectedSearchPlace = null;
-        debouncedMainSearch(event.target.value);
-      });
-
-      mapsSearchInput.addEventListener('focus', () => {
-        if (mapsSearchInput.value.trim()) debouncedMainSearch(mapsSearchInput.value);
-      });
-
-      modalMapsSearchInput.addEventListener('input', (event) => {
-        debouncedModalSearch(event.target.value);
-      });
-
-      addressInput.addEventListener('input', () => {
-        editingLat = null;
-        editingLng = null;
-        updateCoordinateNote();
-      });
-
-      addBtn.addEventListener('click', () => openAddModal());
-      closeBtn.addEventListener('click', closeModal);
-      modalBackdrop.addEventListener('click', (event) => {
-        if (event.target === modalBackdrop) closeModal();
-      });
-
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && modalBackdrop.classList.contains('open')) closeModal();
-      });
-
-      goSelectedBtn.addEventListener('click', () => {
-        if (selectedSearchPlace) openNavigation(selectedSearchPlace);
-      });
-
-      saveSelectedBtn.addEventListener('click', () => {
-        if (selectedSearchPlace) openAddModal(selectedSearchPlace);
-      });
+      function openEdit(id) {
+        const item = destinations.find(d => d.id === id);
+        if (!item) return;
+        editingId = id;
+        modalTitle.textContent = 'Modifier';
+        nameInput.value = item.name;
+        addressInput.value = /^votre /i.test(item.address) ? '' : item.address;
+        iconInput.value = item.icon || '📍';
+        deleteBtn.hidden = false;
+        formError.textContent = '';
+        openModal();
+      }
 
       form.addEventListener('submit', (event) => {
         event.preventDefault();
-        formError.textContent = '';
         const name = nameInput.value.trim();
         const address = addressInput.value.trim();
+        const icon = iconInput.value || '📍';
+
         if (!name || !address) {
-          formError.textContent = 'Le nom et l’adresse sont obligatoires.';
+          formError.textContent = 'Indique un nom et une adresse.';
           return;
         }
 
-        const payload = {
-          id: editingId || makeId(),
-          name,
-          address,
-          icon: iconInput.value || '📍',
-          lat: Number.isFinite(editingLat) ? editingLat : null,
-          lng: Number.isFinite(editingLng) ? editingLng : null,
-        };
-
         if (editingId) {
-          destinations = destinations.map(item => item.id === editingId ? payload : item);
-          showToast('Favori modifié ✓');
+          destinations = destinations.map(d => d.id === editingId ? { ...d, name, address, icon } : d);
         } else {
-          destinations.unshift(payload);
-          showToast('Favori ajouté ✓');
+          destinations.unshift({ id: makeId(), name, address, icon });
         }
-        saveDestinations();
-        renderFavorites();
+
+        save();
         closeModal();
+        render();
       });
 
       deleteBtn.addEventListener('click', () => {
         if (!editingId) return;
-        destinations = destinations.filter(item => item.id !== editingId);
-        saveDestinations();
-        renderFavorites();
+        destinations = destinations.filter(d => d.id !== editingId);
+        save();
         closeModal();
-        showToast('Favori supprimé');
+        render();
       });
 
-      for (const button of document.querySelectorAll('.provider')) {
+      addBtn.addEventListener('click', openAdd);
+      closeBtn.addEventListener('click', closeModal);
+      searchInput.addEventListener('input', render);
+      modalBackdrop.addEventListener('click', (event) => {
+        if (event.target === modalBackdrop) closeModal();
+      });
+
+      document.querySelectorAll('.provider').forEach(button => {
         button.classList.toggle('active', button.dataset.provider === provider);
         button.addEventListener('click', () => {
           provider = button.dataset.provider;
           localStorage.setItem(PROVIDER_KEY, provider);
           document.querySelectorAll('.provider').forEach(btn => btn.classList.toggle('active', btn === button));
         });
-      }
-
-      document.addEventListener('click', (event) => {
-        if (!event.target.closest('.maps-search-wrap')) clearSuggestions(mapsSuggestions);
-        if (!event.target.closest('.modal-search')) clearSuggestions(modalMapsSuggestions);
       });
 
-      renderFavorites();
-      loadGoogleMaps();
+      render();
     })();
   </script>
 </body>
