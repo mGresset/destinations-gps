@@ -1,175 +1,111 @@
-const STORAGE_KEY = 'gps-destinations-v1';
-const PROVIDER_KEY = 'gps-provider-v1';
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b0f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Destinations" />
+  <title>Mes destinations</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon-180.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">NAVIGATION</p>
+        <h1>Mes destinations</h1>
+      </div>
+      <button id="addBtn" class="icon-btn" aria-label="Ajouter une destination">＋</button>
+    </header>
 
-const defaultDestinations = [
-  { id: crypto.randomUUID(), name: 'Maison', address: 'Votre adresse', icon: '🏠' },
-  { id: crypto.randomUUID(), name: 'Travail', address: 'Votre lieu de travail', icon: '💼' },
-  { id: crypto.randomUUID(), name: 'Courses', address: 'Votre centre commercial', icon: '🛒' },
-  { id: crypto.randomUUID(), name: 'Favori', address: 'Votre destination favorite', icon: '⭐' }
-];
+    <section class="provider-card" aria-label="Application de navigation">
+      <span>Ouvrir avec</span>
+      <div class="segmented" role="group" aria-label="Choisir l'application GPS">
+        <button class="provider active" data-provider="google">Google Maps</button>
+        <button class="provider" data-provider="waze">Waze</button>
+      </div>
+    </section>
 
-let destinations = loadDestinations();
-let provider = localStorage.getItem(PROVIDER_KEY) || 'google';
-let editingId = null;
+    <label class="searchbox">
+      <span>⌕</span>
+      <input id="searchInput" type="search" placeholder="Rechercher une destination" autocomplete="off" />
+    </label>
 
-const grid = document.getElementById('destinationsGrid');
-const template = document.getElementById('destinationTemplate');
-const searchInput = document.getElementById('searchInput');
-const countLabel = document.getElementById('countLabel');
-const emptyState = document.getElementById('emptyState');
-const addBtn = document.getElementById('addBtn');
-const dialog = document.getElementById('destinationDialog');
-const form = document.getElementById('destinationForm');
-const closeDialogBtn = document.getElementById('closeDialogBtn');
-const deleteBtn = document.getElementById('deleteBtn');
-const destinationId = document.getElementById('destinationId');
-const nameInput = document.getElementById('nameInput');
-const addressInput = document.getElementById('addressInput');
-const iconInput = document.getElementById('iconInput');
-const dialogTitle = document.getElementById('dialogTitle');
+    <section>
+      <div class="section-heading">
+        <h2>Favoris</h2>
+        <span id="countLabel"></span>
+      </div>
+      <div id="destinationsGrid" class="destinations-grid"></div>
+      <p id="emptyState" class="empty-state" hidden>Aucune destination trouvée.</p>
+    </section>
+  </main>
 
-function loadDestinations() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return Array.isArray(saved) && saved.length ? saved : defaultDestinations;
-  } catch {
-    return defaultDestinations;
-  }
-}
+  <dialog id="destinationDialog">
+    <form id="destinationForm" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">DESTINATION</p>
+          <h2 id="dialogTitle">Ajouter</h2>
+        </div>
+        <button type="button" id="closeDialogBtn" class="icon-btn small" aria-label="Fermer">×</button>
+      </div>
 
-function saveDestinations() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(destinations));
-}
+      <input type="hidden" id="destinationId" />
 
-function navigationUrl(address) {
-  const q = encodeURIComponent(address.trim());
-  if (provider === 'waze') {
-    return `https://www.waze.com/ul?q=${q}&navigate=yes`;
-  }
-  return `https://www.google.com/maps/dir/?api=1&destination=${q}&travelmode=driving`;
-}
+      <label>
+        Nom
+        <input id="nameInput" required maxlength="40" placeholder="Ex. Maison" />
+      </label>
 
-function openNavigation(address) {
-  if (!address || /votre /i.test(address)) {
-    editDestination(destinations.find(d => d.address === address)?.id);
-    return;
-  }
+      <label>
+        Adresse ou lieu
+        <input id="addressInput" required maxlength="180" placeholder="Ex. 10 avenue des Champs-Élysées, Paris" />
+      </label>
 
-  // assign() est volontairement utilisé plutôt que window.open() :
-  // sur iPhone, cela maximise les chances que le lien universel passe à l'app GPS.
-  window.location.assign(navigationUrl(address));
-}
+      <label>
+        Icône
+        <select id="iconInput">
+          <option>🏠</option>
+          <option>💼</option>
+          <option>⚽</option>
+          <option>🛒</option>
+          <option>🏋️</option>
+          <option>👨‍👩‍👦</option>
+          <option>⭐</option>
+          <option>📍</option>
+          <option>🍽️</option>
+          <option>🏥</option>
+          <option>✈️</option>
+          <option>🏨</option>
+        </select>
+      </label>
 
-function render() {
-  const query = searchInput.value.trim().toLocaleLowerCase('fr');
-  const filtered = destinations.filter(item =>
-    `${item.name} ${item.address}`.toLocaleLowerCase('fr').includes(query)
-  );
+      <div class="dialog-actions">
+        <button type="button" id="deleteBtn" class="danger" hidden>Supprimer</button>
+        <button type="submit" class="primary">Enregistrer</button>
+      </div>
+    </form>
+  </dialog>
 
-  grid.innerHTML = '';
-  filtered.forEach(item => {
-    const node = template.content.cloneNode(true);
-    const card = node.querySelector('.destination-card');
-    const openBtn = node.querySelector('.destination-open');
-    const editBtn = node.querySelector('.edit-btn');
+  <template id="destinationTemplate">
+    <article class="destination-card">
+      <button class="destination-open">
+        <span class="destination-icon"></span>
+        <span class="destination-copy">
+          <strong class="destination-name"></strong>
+          <small class="destination-address"></small>
+        </span>
+        <span class="arrow">›</span>
+      </button>
+      <button class="edit-btn" aria-label="Modifier la destination">•••</button>
+    </article>
+  </template>
 
-    node.querySelector('.destination-icon').textContent = item.icon || '📍';
-    node.querySelector('.destination-name').textContent = item.name;
-    node.querySelector('.destination-address').textContent = item.address;
-
-    openBtn.addEventListener('click', () => openNavigation(item.address));
-    editBtn.addEventListener('click', (event) => {
-      event.stopPropagation();
-      editDestination(item.id);
-    });
-
-    card.dataset.id = item.id;
-    grid.appendChild(node);
-  });
-
-  countLabel.textContent = `${filtered.length} destination${filtered.length > 1 ? 's' : ''}`;
-  emptyState.hidden = filtered.length !== 0;
-}
-
-function openAddDialog() {
-  editingId = null;
-  destinationId.value = '';
-  dialogTitle.textContent = 'Ajouter';
-  nameInput.value = '';
-  addressInput.value = '';
-  iconInput.value = '📍';
-  deleteBtn.hidden = true;
-  dialog.showModal();
-  setTimeout(() => nameInput.focus(), 50);
-}
-
-function editDestination(id) {
-  const item = destinations.find(d => d.id === id);
-  if (!item) return;
-
-  editingId = id;
-  destinationId.value = id;
-  dialogTitle.textContent = 'Modifier';
-  nameInput.value = item.name;
-  addressInput.value = item.address;
-  iconInput.value = item.icon || '📍';
-  deleteBtn.hidden = false;
-  dialog.showModal();
-}
-
-function closeDialog() {
-  dialog.close();
-  editingId = null;
-}
-
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const name = nameInput.value.trim();
-  const address = addressInput.value.trim();
-  const icon = iconInput.value;
-
-  if (!name || !address) return;
-
-  if (editingId) {
-    destinations = destinations.map(item =>
-      item.id === editingId ? { ...item, name, address, icon } : item
-    );
-  } else {
-    destinations.unshift({ id: crypto.randomUUID(), name, address, icon });
-  }
-
-  saveDestinations();
-  closeDialog();
-  render();
-});
-
-deleteBtn.addEventListener('click', () => {
-  if (!editingId) return;
-  destinations = destinations.filter(item => item.id !== editingId);
-  saveDestinations();
-  closeDialog();
-  render();
-});
-
-addBtn.addEventListener('click', openAddDialog);
-closeDialogBtn.addEventListener('click', closeDialog);
-searchInput.addEventListener('input', render);
-
-for (const button of document.querySelectorAll('.provider')) {
-  button.classList.toggle('active', button.dataset.provider === provider);
-  button.addEventListener('click', () => {
-    provider = button.dataset.provider;
-    localStorage.setItem(PROVIDER_KEY, provider);
-    document.querySelectorAll('.provider').forEach(btn =>
-      btn.classList.toggle('active', btn === button)
-    );
-  });
-}
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
-  });
-}
-
-render();
+  <script src="app.js" defer></script>
+</body>
+</html>
