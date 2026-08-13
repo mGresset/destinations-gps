@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Destinations" />
-  <title>Mes destinations · V4</title>
+  <title>Mes destinations · V5</title>
   <style>
     :root {
       color-scheme: dark;
@@ -226,10 +226,9 @@
     .grid {
       flex: 1 1 auto;
       min-height: 0;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-auto-rows: minmax(0, 1fr);
-      gap: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
       overflow-y: auto;
       overscroll-behavior: contain;
       scrollbar-width: none;
@@ -239,42 +238,42 @@
     .grid::-webkit-scrollbar { display: none; }
 
     .card {
-      min-height: 0;
+      flex: 0 0 62px;
+      min-height: 62px;
       position: relative;
-      display: grid;
-      grid-template-columns: 1fr;
-      align-items: stretch;
+      display: block;
       background: var(--panel);
-      border-radius: 17px;
+      border-radius: 14px;
       overflow: hidden;
       box-shadow: inset 0 0 0 1px var(--line);
     }
 
     .open-destination {
+      width: 100%;
+      height: 100%;
       min-width: 0;
-      min-height: 0;
       border: 0;
       background: transparent;
       text-align: left;
       display: grid;
-      grid-template-columns: 42px 1fr;
+      grid-template-columns: 38px 1fr 18px;
       grid-template-rows: auto auto;
       align-content: center;
       align-items: center;
-      column-gap: 9px;
-      row-gap: 1px;
-      padding: 10px 30px 10px 10px;
+      column-gap: 10px;
+      row-gap: 2px;
+      padding: 8px 42px 8px 10px;
     }
 
     .destination-icon {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       grid-row: 1 / 3;
-      border-radius: 13px;
+      border-radius: 11px;
       background: var(--panel2);
       display: grid;
       place-items: center;
-      font-size: 23px;
+      font-size: 21px;
     }
 
     .destination-copy {
@@ -293,27 +292,36 @@
 
     .destination-copy strong {
       align-self: end;
-      font-size: clamp(13px, 3.5vw, 16px);
-      line-height: 1.1;
+      font-size: 16px;
+      line-height: 1.12;
+      font-weight: 760;
     }
 
     .destination-copy small {
       align-self: start;
       color: var(--muted);
-      font-size: clamp(9px, 2.5vw, 11px);
+      font-size: 11.5px;
       line-height: 1.2;
     }
 
-    .arrow { display: none; }
+    .arrow {
+      display: block;
+      grid-column: 3;
+      grid-row: 1 / 3;
+      color: var(--muted);
+      font-size: 18px;
+      justify-self: end;
+    }
 
     .edit-btn {
       position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 29px;
-      height: 29px;
+      top: 50%;
+      right: 6px;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
       border: 0;
-      border-radius: 10px;
+      border-radius: 9px;
       background: rgba(255,255,255,.055);
       font-size: 13px;
       line-height: 1;
@@ -479,10 +487,6 @@
         width: min(760px, 100%);
       }
 
-      .grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
       .modal-backdrop {
         align-items: center;
       }
@@ -520,16 +524,29 @@
         flex-basis: 40px;
       }
 
+      .card {
+        flex-basis: 56px;
+        min-height: 56px;
+      }
+
       .destination-icon {
-        width: 36px;
-        height: 36px;
-        font-size: 20px;
+        width: 34px;
+        height: 34px;
+        font-size: 19px;
       }
 
       .open-destination {
-        grid-template-columns: 36px 1fr;
-        padding-top: 7px;
-        padding-bottom: 7px;
+        grid-template-columns: 34px 1fr 18px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+      }
+
+      .destination-copy strong {
+        font-size: 15px;
+      }
+
+      .destination-copy small {
+        font-size: 10.5px;
       }
     }
   </style>
@@ -538,7 +555,7 @@
   <main class="app">
     <header class="topbar">
       <div>
-        <p class="eyebrow">NAVIGATION · V4</p>
+        <p class="eyebrow">NAVIGATION · V5</p>
         <h1>Mes destinations</h1>
       </div>
       <button id="addBtn" class="icon-btn" type="button" aria-label="Ajouter une destination">＋</button>
